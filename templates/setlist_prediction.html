@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Setlist Prediction</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/setlist_prediction.css') }}">
+</head>
+
+<body data-live-id="{{ live_id }}">
+    <header class="header-nav">
+        <nav><a href="{{ url_for('home')}}">Home</a></nav>
+        <nav><a href="{{ url_for('livelist') }}">Live List</a></nav>
+        <nav><a href="{{ url_for('history')}}">Hsitory</a></nav>
+     </header>
+<div class="main">
+
+  <h1>Setlist Prediction</h1>
+
+  <div id="live-info">
+    <p>ライブ情報を読み込んでいます...</p>
+  </div>
+
+  <div id="prediction-area"></div>
+
+  <script
+    src="{{ url_for('static', filename='javascript/setlist_prediction.js') }}"
+    defer>
+  </script>
+  </div>
+</body>
+</html>

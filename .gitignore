@@ -8,3 +8,12 @@ wheels/
 
 # Virtual environments
 .venv
+
+# Environment variables / API keys
+.env
+
+# macOS
+.DS_Store
+
+# Uploaded images
+static/uploads/

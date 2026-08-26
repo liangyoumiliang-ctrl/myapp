@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>ライブ詳細</title>
+
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='stylesheets/history_detail.css') }}"
+  >
+</head>
+
+<body data-live-id="{{ live_id }}">
+  <header class="header-nav">
+    <nav><a href="{{ url_for('home') }}">Home</a></nav>
+    <nav><a href="{{ url_for('livelist') }}">Live List</a></nav>
+    <nav><a href="{{ url_for('history') }}">History</a></nav>
+  </header>
+
+  <main class="history-detail-page">
+    <a
+      href="{{ url_for('history') }}"
+      class="back-link">
+      ← Historyへ戻る
+    </a>
+    <div class="twopage">
+    <div class="live-card">
+    <section id="live-detail"></section>
+    <br>
+
+    <section class="setlist-section">
+      <h2>Setlist</h2>
+
+      <form id="setlist-form">
+        <input
+          type="text"
+          id="song-title"
+          placeholder="曲名を入力"
+          required
+        >
+
+        <button type="submit">
+          曲を追加
+        </button>
+      </form>
+
+      <ol id="setlist-list"></ol>
+      <button type="button" id="edit-button">編集</button>
+    </section>
+    <br>
+
+    <section class="memo-section">
+      <h2>Memo</h2>
+
+      <textarea
+        id="live-memo"
+        placeholder="ライブの感想を入力"
+      ></textarea>
+
+      <button
+        type="button"
+        id="save-memo-button">
+        保存
+      </button>
+    </section>
+    </div>
+    <section class="photo-section">
+        <h2>Photos</h2>
+      
+        <label for="photo-input" class="photo-add-button">
+          ＋ 写真を追加
+        </label>
+      
+        <input
+          type="file"
+          id="photo-input"
+          accept="image/*"
+          multiple
+        >
+      
+        <div id="photo-gallery"></div>
+      </section>
+    </div>
+  </main>
+  <div id="photo-modal" class="photo-modal">
+    <button
+    id="photo-prev"
+    class="photo-arrow left">
+    ❮
+  </button>
+  
+    <img
+      id="photo-modal-image"
+      class="photo-modal-image"
+      src=""
+      alt="拡大写真"
+    >
+
+    <button
+    id="photo-next"
+    class="photo-arrow right">
+    ❯
+  </button>
+  <span id="photo-modal-close" class="photo-modal-close">
+    ×
+  </span>
+  <div id="photo-counter"></div>
+
+  </div>
+
+  <script
+    src="{{ url_for('static', filename='javascript/history_detail.js') }}"
+    defer>
+  </script>
+</body>
+</html>

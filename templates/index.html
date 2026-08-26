@@ -1,0 +1,64 @@
+<!DOCTYPE html> 
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>Live Home</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/index.css') }}">
+  </head>
+  <body><!--このbody要素の中に書きます-->
+     <header class="header-nav">
+        <nav><a href="{{ url_for('home')}}">Home</a></nav>
+        <nav><a href="{{ url_for('livelist') }}">Live List</a></nav>
+        <nav><a href="{{ url_for('history')}}">Hsitory</a></nav>
+     </header>
+     <div class="hero">
+        <div class="overlay"></div>
+      
+        <div class="content">
+          <h1>次のライブを、もっと楽しもう。</h1>
+          <p>ライブ予定を登録するだけでAIが予習プレイリストを作成</p>
+          <span class="scroll-guide">
+            あなたのライブへ<br>
+            <span class="arrow">⇩</span>
+          </span>
+        </div>
+      </div>
+      <section id="home-section">
+        <div class="card-container">
+            <div class="card next-live">
+              <h3>Next Live</h3>
+              <div class="live-empty">
+                <div id="live-list"></div>
+                <div class="all">
+                    <a href="{{ (url_for('livelist'))}}">すべて見る →</a>
+                </div>
+              </div>
+              <div class="setlist-area">
+                <h4>AIセトリ予想</h4>
+                <div id="predict-setlist"></div>
+              </div>
+            </div>
+        
+            <div class="card playlist">
+              <h3>プレイリスト</h3>
+              <p>ライブ予習用プレイリスト</p>
+            </div>
+        
+            <div class="card history">
+              <h3>Live History</h3>
+              <div class="history-empty">
+                <div id="history-list"></div>
+                <div class="all">
+                    <a href="{{ url_for('history')}}">すべて見る →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+      </section>
+
+     <script src="{{ url_for('static', filename='javascript/index.js') }}" defer></script>
+     <footer>
+        <small>© 2020 米良諒祐 All Rights Reserved.</small>
+     </footer>
+  </body>
+</html>

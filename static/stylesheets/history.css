@@ -1,0 +1,299 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+/* header */
+    header{
+        height: 60px;
+        background-color: #000;
+    }
+
+    .header-nav{
+        position: fixed;
+        width: 100%;
+        height: 60px;
+        z-index: 1000;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;   /* メニューを中央に */
+        align-items: center;
+
+        background: #000;
+    }
+
+    .header-nav nav{
+        margin-right: 5%;
+    }
+
+    a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: gray;
+    }
+
+    .history-page {
+        padding: 200px 40px 20px;
+        min-height:calc(100vh - 110px);
+        background:
+            radial-gradient(
+            circle at 75% 30%,
+            rgba(255, 210, 0, 0.15),
+            transparent 35%
+            ),
+            linear-gradient(
+            180deg,
+            #050505 0%,
+            #111111 100%
+            );
+        color: #000;
+    }
+
+    .content{
+        position:relative;
+        z-index:3;
+
+        color:white;
+        text-align:center;
+
+        top:50%;
+        transform:translateY(-50%);
+    }
+
+    .history-card { 
+        display: grid;
+        grid-template-columns: 1fr 260px;
+        align-items: stretch;
+        max-width: 1100px;
+        margin: 30px auto;
+        background: rgba(255, 255, 255, 0.96);
+        border-radius: 24px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(138, 43, 226, 0.35),
+        0 0 40px rgba(138, 43, 226, 0.15);
+    }
+
+    .history-main {
+        padding: 40px;
+    }
+
+    .history-main h2 {
+        font-size: 34px;
+        margin-bottom: 30px;
+    }
+
+    .live-meta {
+        display: flex;
+        gap: 50px;
+        margin-bottom: 35px;
+    }
+
+    .live-meta p {
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .live-meta span {
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: #888;
+    }
+
+    .live-date-area {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        padding: 30px;
+
+        background: linear-gradient(
+            160deg,
+            #1c1028,
+            #060710
+        );
+        color: white;
+    }
+
+    .memory-label {
+        font-size: 14px;
+        letter-spacing: 2px;
+
+        margin-bottom: 5px;
+    }
+
+    .memory {
+        font-weight: bold;
+        line-height: 1;
+        margin: 8px auto;
+    }
+
+    .month { 
+        font-size: 48px;
+    }
+
+    .year {
+        font-size: 24px;
+    }
+
+    .button-area {
+        text-align: center;
+        padding: 20px;
+    }
+
+    .detail-button {
+        padding: 12px 28px;
+
+        border: none;
+        border-radius: 999px;
+
+        background: linear-gradient(
+            90deg,
+            #7c3aed,
+            #c026d3
+        );
+
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+
+        cursor: pointer;
+    }
+    .detail-button:hover {
+        background: linear-gradient(
+            90deg,
+            #5a1ec3,
+            #871497
+        );
+    }
+    .detail-button:active {
+    background: linear-gradient(
+        90deg,
+        #38098a
+    );
+    }
+
+    .delete-button {
+        margin-top: 20px;
+    
+        border: none;
+        background: transparent;
+    
+        color: #aaa;
+        font-size: 12px;
+    
+        cursor: pointer;
+    }
+    
+    .delete-button:hover {
+        color: gray;
+    }
+
+    .card-container {
+        display:grid;
+
+        grid-template-columns: 1fr;   /* 左右2列 */
+        gap:40px;
+
+        max-width:750px;
+        margin: 0 auto;
+    }
+
+    .card {
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
+        0 0 30px rgba(255, 215, 0, 0.3);
+    }
+
+    .input {
+        grid-row:1 / 3;      /* 1～2行分使う */
+        min-height:600px;
+    }
+
+    .card h2 {
+        color:#000;
+    }
+
+    .card label {
+        color:#000;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .wrap{
+        position: relative;
+        width: 500px;
+        height: 100px;
+
+        margin: 0 auto;
+    }
+
+    .label {
+        position: absolute;
+        top: -30px;
+        left: 10px;
+        font-size: 16px;
+        color: red;
+        transition: all 0.25s ease;
+        pointer-events: none;
+    }
+    .flatpickr-input {
+        background: #2b2b2b;
+        color: white;
+        border: 1px solid #555;
+        border-radius: 10px;
+        padding: 15px;
+        width: 100%;
+    }
+
+    #history-live-date::placeholder {
+        color: #fff;   /* 好きな色 */
+    }
+
+    #history-start-time::placeholder {
+        color: #fff;   /* 好きな色 */
+    }
+
+    .textbox{
+        position: relative;
+        display: block;
+        width: 500px;
+        margin-top: 50px;
+        padding: 15px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #fff;
+        background-color: gray;
+        outline: none;
+    }
+
+    .button-area {
+        text-align: center;
+        padding: 20px;
+    }
+
+    #add-history-button {
+        background-color: #17b717; /* 基本の赤色 */
+        color: #ffffff;            /* 文字色：白 */
+        border: none;              /* 枠線なし */
+        padding: 8px 16px;         /* 余白（上下 左右） */
+        font-size: 18px;           /* 文字サイズ */
+        border-radius: 8px;        /* 角丸 */
+        cursor: pointer;           /* カーソルをポインターに */
+        transition: background-color 0.2s ease; /* ホバー時の滑らかな変化 */
+    }
+   
+    #add-history-button:hover {
+        background-color: #0a820a; /* 少し濃い赤 */
+    }
+    
+    #add-history-button:active {
+    background-color: #045004; /* さらに濃い赤 */
+    }

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>ライブ予定を追加</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/addlive.css') }}">
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+    </head>
+
+    <body>
+        <header class="header-nav">
+            <nav><a href="{{ url_for('home')}}">Home</a></nav>
+            <nav><a href="{{ url_for('livelist')}}">Live List</a></nav>
+            <nav><a href="{{ url_for('history')}}">History</a></nav>
+        </header>
+
+        <div class="mainpage">
+            <main class="add-live-page">
+                <section class="content">
+                    <h1>ライブ予定を追加</h1>
+                    <p>
+                    Googleカレンダーからライブ予定を取り込みます。
+                    </p>
+                    
+                    <div class="button-area">
+                    <button type="button" id="calendar-connect-button" class="button-costum">
+                        Googleカレンダーと連携
+                    </button>
+                    </div>
+                </section>
+                <div class="status-area">
+                    <h2 id="calendar-status">
+                    <br>
+                    No connection
+                    </h2>
+                </div>
+
+                    <div id="calendar-events">
+                    </div>
+                    <div id="countdown"></div>
+                    <div class="status-area">
+                    <span class="scroll-guide">
+                        ライブ情報を入力<br>
+                        <span class="arrow">⇩</span>
+                      </span>
+                    </div>
+            </main>
+
+            <div class="card-container">
+                <div class="card input">
+                    <h2>ライブ情報を入力</h2>
+                    <br>
+                    <div class="wrap">
+                        <input class="textbox" type="text" id="artist">
+                        <label class="label">Artist</label>
+                    </div>
+                    <div class="wrap">
+                        <input class="textbox" type="date" id="live-date" placeholder="ライブ日を選択">
+                        <label class="label">Date</label>
+                    </div>
+                    <div class="wrap">
+                        <input class="textbox" type="time" id="start-time" placeholder="開演時間を選択">
+                        <label class="label" >Time</label>
+                    </div>
+                    <div class="wrap">
+                        <input class="textbox" type="text" id="venue">
+                        <label class="label">Place</label>
+                    </div>
+                    <br>
+                    <div class="button-area">
+                        <button id="add-calendar-button">
+                        Add to calendar
+                        </button>
+                    </div>
+                </div>
+            <script src="https://accounts.google.com/gsi/client" defer></script>
+
+            <script src="{{ url_for('static', filename='javascript/calendar.js') }}" defer></script>
+
+            <script src="{{ url_for('static', filename='javascript/addlive.js') }}" defer></script>
+
+            <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+            <script src="{{ url_for('static', filename='javascript/inputtext.js') }}" defer></script>
+            </div>
+
+        </div>
+        <footer>
+            <small>© 2020 米良諒祐 All Rights Reserved.</small>
+         </footer>
+    </body>
+</html>

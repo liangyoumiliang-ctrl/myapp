@@ -1,0 +1,366 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+/* header */
+    header{
+        height: 60px;
+        background-color: #000;
+    }
+
+    .header-nav{
+        position: fixed;
+        width: 100%;
+        height: 60px;
+        z-index: 1000;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;   /* メニューを中央に */
+        align-items: center;
+
+        background: #000;
+    }
+
+    .header-nav nav{
+        margin-right: 5%;
+    }
+
+    a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: gray;
+    }
+
+    /* main */
+
+    .mainpage {
+        padding: 200px 40px 20px;
+        min-height: 100vh;
+        background:
+        radial-gradient(
+        circle at 75% 30%,
+        rgba(255, 210, 0, 0.15),
+        transparent 35%
+        ),
+        linear-gradient(
+        180deg,
+        #050505 0%,
+        #111111 100%
+        );
+        color: white;
+    }
+
+    .content {
+        text-align: center;
+    }
+    
+    .content h1,
+    .content p {
+        color: white;
+    }
+
+    .status-area {
+        text-align: center;
+    }
+
+    .scroll-guide {
+        display: block;
+        margin-top: 96px;
+      }
+    .arrow {
+        font-size: 50px;
+        display: inline-block;
+        animation: bounce 1.5s infinite;
+    }
+    
+    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(10px);
+        }
+    }
+
+    .button-costum {
+        background-color: #17b717; /* 基本の赤色 */
+        color: #ffffff;            /* 文字色：白 */
+        border: none;              /* 枠線なし */
+        padding: 8px 16px;         /* 余白（上下 左右） */
+        font-size: 18px;           /* 文字サイズ */
+        border-radius: 8px;        /* 角丸 */
+        cursor: pointer;           /* カーソルをポインターに */
+        transition: background-color 0.2s ease; /* ホバー時の滑らかな変化 */
+    }
+    .button-costum:hover {
+        background-color: #0a820a; /* 少し濃い赤 */
+    }
+    .button-costum:active {
+    background-color: #045004; /* さらに濃い赤 */
+    }
+
+
+    .add-live-page {
+        height: 800px;
+    }
+
+    .card-container {
+        display:grid;
+
+        grid-template-columns: 1fr;
+        gap:40px;
+
+        max-width:750px;
+        margin: 0 auto;
+    }
+
+    .calendar-event {
+        display: grid;
+        grid-template-columns: 1fr 260px;
+        align-items: stretch;
+    
+        max-width: 1100px;
+        margin: 30px auto;
+    
+        background: rgba(255, 255, 255, 0.96);
+    
+        border-radius: 24px;
+        overflow: hidden;
+    
+        box-shadow:
+            0 0 20px rgba(138, 43, 226, 0.35),
+            0 0 40px rgba(138, 43, 226, 0.15);
+    }
+
+    .minicard {
+        padding: 40px;
+    }
+
+    .minicard h2{
+        color: #000;
+        font-size: 34px;
+        margin-bottom: 30px;
+    }
+
+    .live-meta {
+        display: flex;
+        gap: 50px;
+
+        margin-bottom: 35px;
+    }
+
+    .live-meta p {
+        font-size: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        color: #000;
+    }
+
+    .live-meta span {
+        font-size: 11px;
+        letter-spacing: 2px;
+        color: #888;
+    }
+
+    .live-countdown-area {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    
+        padding: 30px;
+    
+        background:
+            linear-gradient(
+                160deg,
+                #1c1028,
+                #0b0710
+            );
+    
+        color: white;
+    }
+
+    .countdown-label {
+        font-size: 14px;
+        letter-spacing: 2px;
+    
+        margin-bottom: 5px;
+    }
+    
+    .countdown-number {
+        font-size: 72px;
+        font-weight: bold;
+        line-height: 1;
+    }
+    
+    .countdown-unit {
+        font-size: 14px;
+        letter-spacing: 5px;
+    
+        margin-bottom: 30px;
+    }
+
+    .card {
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
+        0 0 30px rgba(255, 215, 0, 0.3);
+    }
+
+    .input {
+        grid-row:1 / 3;      /* 1～2行分使う */
+        min-height:600px;
+        max-height: 700px;
+    }
+
+    .card h2 {
+        color:#000;
+    }
+
+    .card label {
+        color:#000;
+        font-family: 'Times New Roman', Times, serif;
+    }
+
+    .wrap{
+        position: relative;
+        width: 500px;
+        height: 80px;
+
+        margin: 0 auto;
+    }
+
+    .label {
+        position: absolute;
+        top: -30px;
+        left: 10px;
+        font-size: 16px;
+        color: red;
+        transition: all 0.25s ease;
+        pointer-events: none;
+    }
+    .flatpickr-input {
+        background: #2b2b2b;
+        color: white;
+        border: 1px solid #555;
+        border-radius: 10px;
+        padding: 15px;
+        width: 100%;
+    }
+
+    #live-date::placeholder {
+        color: #fff;   /* 好きな色 */
+    }
+
+    #start-time::placeholder {
+        color: #fff;   /* 好きな色 */
+    }
+
+
+    .textbox{
+        position: relative;
+        display: block;
+        width: 500px;
+        margin-top: 50px;
+        padding: 15px;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        color: #fff;
+        background-color: gray;
+        outline: none;
+    }
+
+    .button-area {
+        text-align: center;
+        padding: 20px;
+    }
+
+    #add-calendar-button {
+        background-color: #17b717; /* 基本の赤色 */
+        color: #ffffff;            /* 文字色：白 */
+        border: none;              /* 枠線なし */
+        padding: 8px 16px;         /* 余白（上下 左右） */
+        font-size: 18px;           /* 文字サイズ */
+        border-radius: 8px;        /* 角丸 */
+        cursor: pointer;           /* カーソルをポインターに */
+        transition: background-color 0.2s ease; /* ホバー時の滑らかな変化 */
+    }
+
+    #add-calendar-button:hover {
+        background-color: #0a820a; /* 少し濃い赤 */
+    }
+
+    #add-calendar-button:active {
+    background-color: #045004; /* さらに濃い赤 */
+    }
+
+    .import-button {
+        padding: 12px 28px;
+
+        border: none;
+        border-radius: 999px;
+
+        background: linear-gradient(
+            90deg,
+            #7c3aed,
+            #c026d3
+        );
+
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+
+        cursor: pointer;
+    }
+    .import-button:hover {
+        background: linear-gradient(
+            90deg,
+            #5a1ec3,
+            #871497
+        );
+    }
+    .import-button:active {
+    background: linear-gradient(
+        90deg,
+        #38098a
+    );
+    }
+
+
+
+    .live-preview {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        overflow: hidden;
+        background:
+        linear-gradient(
+        180deg,
+        rgba(0, 0, 0, 0.05),
+        rgba(0, 0, 0, 0.9)
+        )
+    }
+
+    /* footer */
+    footer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      
+        height: 50px;
+        background-color: #000;
+        font-size: 15px;
+        color: #fff;
+      }
+
+
+
+

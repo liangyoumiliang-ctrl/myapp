@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Live History</title>
+
+  <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='stylesheets/history.css') }}"
+  >
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
+
+</head>
+
+<body>
+  <header class="header-nav">
+    <nav><a href="{{ url_for('home') }}">Home</a></nav>
+    <nav><a href="{{ url_for('livelist') }}">Live List</a></nav>
+    <nav><a href="{{ url_for('history') }}">History</a></nav>
+  </header>
+
+  <div class="history-page">
+    <div class="page-header">
+      <div class="content">  
+      <p>LIVE HISTORY</p>
+      <h1>ライブ履歴</h1>
+      <p>これまでに参加したライブを振り返れます。</p>
+      </div>
+    </div>
+
+    <section id="history-list"></section>
+
+    <section class="history-add-section">
+        <div class="card-container">
+            <div class="card input">
+        <h2>ライブ履歴を追加</h2>
+      
+        <form id="history-add-form">
+            <div class="wrap">
+                <input class="textbox" type="text" id="history-artist">
+                <label class="label">Artist</label>
+            </div>
+            <div class="wrap">
+                <input class="textbox" type="date" id="history-live-date" placeholder="ライブ日を選択">
+                <label class="label">Date</label>
+            </div>
+            <div class="wrap">
+                <input class="textbox" type="time" id="history-start-time" placeholder="開演時間を選択">
+                <label class="label" >Time</label>
+            </div>
+            <div class="wrap">
+                <input class="textbox" type="text" id="history-venue">
+                <label class="label">Place</label>
+            </div>
+            <br>
+            <div class="button-area">
+                <button type="submit" id="add-history-button">
+                Add to History
+                </button>
+            </div>
+        </form>
+        </div>
+        </div>
+      </section>
+    
+    </div>
+
+  <script
+    src="{{ url_for('static', filename='javascript/history.js') }}"
+    defer>
+  </script>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script src="{{ url_for('static', filename='javascript/inputtext.js') }}" defer></script>
+</div>
+</body>
+</html>

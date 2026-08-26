@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <title>Live List</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/livelist.css') }}">
+  </head>
+
+  <body>
+    <header class="header-nav">
+        <nav><a href="{{ url_for('home')}}">Home</a></nav>
+        <nav><a href="{{ url_for('livelist')}}">Live List</a></nav>
+        <nav><a href="{{ url_for('history')}}">History</a></nav>
+    </header>
+    <div class="live-list-page">
+      <div class="page-header">
+        <div class="content">
+          <p>LIVE SCHEDULE</p>
+          <h1>ライブ一覧</h1>
+          <p class="page-description">
+            登録したライブ予定を確認・管理できます。
+          </p>
+          <br>
+          <a href="{{ url_for('addlive')}}" class="button add">
+            Add Live
+          </a>
+        </div>
+
+      <section class="live-list">
+        <h1>Next Live</h1>
+
+      </section>
+      
+
+    <div id="live-list"></div>
+    <div id="countdown"></div>
+
+      </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='javascript/livelist.js') }}" defer></script>
+
+    <footer>
+      <small>© 2020 米良諒祐 All Rights Reserved.</small>
+    </footer>
+
+  </body>
+</html>

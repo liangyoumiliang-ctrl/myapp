@@ -1,0 +1,145 @@
+* {
+    margin: 0;
+    padding: 0;
+  }
+/* header */
+    header{
+        height: 60px;
+        background-color: #000;
+    }
+
+    .header-nav{
+        position: fixed;
+        width: 100%;
+        height: 60px;
+        z-index: 1000;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;   /* メニューを中央に */
+        align-items: center;
+
+        background: #000;
+    }
+
+    .header-nav nav{
+        margin-right: 5%;
+    }
+
+    a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: gray;
+    }
+
+    .main {
+        padding: 200px 40px 20px;
+        min-height:calc(100vh - 110px);
+        background:
+            radial-gradient(
+            circle at 75% 30%,
+            rgba(255, 210, 0, 0.15),
+            transparent 35%
+            ),
+            linear-gradient(
+            180deg,
+            #050505 0%,
+            #111111 100%
+            );
+        color: #fff;
+    }
+
+    .prediction-card {
+        display:flex;
+        align-items:center;
+        gap:40px;
+        border: 1px solid #fff;
+        border-radius: 4px;
+
+        max-width:900px;
+        margin:30px auto;
+        padding:30px;
+
+        box-shadow:
+            0 0 40px rgba(138,43,226,.4);
+    }
+
+    #predict-setlist-button{
+        background-color: #17b717; /* 基本の赤色 */
+        color: #ffffff;            /* 文字色：白 */
+        border: none;              /* 枠線なし */
+        padding: 10px 18px;         /* 余白（上下 左右） */
+        font-size: 16px;           /* 文字サイズ */
+        border-radius: 8px;        /* 角丸 */
+        cursor: pointer;           /* カーソルをポインターに */
+        transition: background-color 0.2s ease; /* ホバー時の滑らかな変化 */
+        text-decoration: none;
+        margin: 5px;
+    }
+
+    #predict-setlist-button:hover {
+        background-color: #0a820a;
+    }
+
+    #predict-setlist-button:active {
+        background-color: #045004;
+    }
+
+    .artwork-area{
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+    }
+
+    .song-number{
+        font-size:26px;
+        font-weight:bold;
+        margin-bottom:15px;
+    }
+
+    .prediction-artwork{
+        width:180px;
+        height:180px;
+    
+        border-radius:15px;
+    
+        object-fit:cover;
+    }
+
+    .song-info h3{
+        flex:1;
+
+        text-align:left;
+    }
+
+    .song-info p {
+        font-size:18px;
+        color:#666;
+
+        margin-bottom:30px;
+    }
+
+    .song-info a{
+        display:inline-block;
+    
+        padding:12px 24px;
+    
+        background:#A259FF;
+        color:white;
+    
+        text-decoration:none;
+        border-radius:10px;
+    
+        transition:.2s;
+    }
+    
+    .song-info a:hover{
+        background:#8b3dff;
+    }
+
+    
+
+    
