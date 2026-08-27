@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
   }
 /* header */
     header{
@@ -26,6 +27,11 @@
         margin-right: 5%;
     }
 
+    .colorchange {
+      position: absolute;
+      left: 5%;
+  }
+
     a {
         color: #fff;
         text-decoration: none;
@@ -38,18 +44,27 @@
     .history-detail-page {
         padding: 200px 40px 20px;
         min-height:calc(100vh - 110px);
-        background:
-            radial-gradient(
-            circle at 75% 30%,
-            rgba(255, 210, 0, 0.15),
-            transparent 35%
-            ),
-            linear-gradient(
-            180deg,
-            #050505 0%,
-            #111111 100%
-            );
-        color: #fff;
+        background:var(--bg-color);
+        color:var(--tx-color);
+    }
+  
+  .back-button:hover {
+      transform: translateX(-3px);
+  
+      box-shadow:
+          0 4px 15px rgba(0, 0, 0, 0.1),
+          0 0 15px rgba(138, 43, 226, 0.25);
+  }
+
+    .content {
+      position:relative;
+        z-index:3;
+
+        color:var(--tx-color);
+        text-align:center;
+
+        top:50%;
+        transform:translateY(-50%);
     }
 
     .twopage {
@@ -67,6 +82,11 @@
         color:#000;
         width: 40%;
         flex-flow: column;
+    }
+
+    .detail-label,
+    .detail-information {
+      font-weight: bold;
     }
 
     .photo-section {
@@ -87,21 +107,38 @@
       }
       
       .photo-add-button {
-        display: inline-block;
-        padding: 12px 24px;
-      
-        background: #ffd54f;
-        color: #111;
-      
-        border-radius: 10px;
-        cursor: pointer;
-      
+        max-width: 420px;
+        height: 150px;
+    
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    
+        border: 1px dashed #8b3dff;
+        border-radius: 12px;
+    
+        background: var(--bg-camera);
+        color: #7c3aed;
+    
+        font-size: 18px;
         font-weight: bold;
-      }
-      
-      .photo-add-button:hover {
-        opacity: 0.8;
-      }
+    
+        cursor: pointer;
+        transition: 0.15s;
+    
+        box-sizing: border-box;
+    }
+    
+    .photo-add-button:hover {
+        background: rgba(139, 61, 255, 0.08);
+        transform: translateY(-2px);
+    }
+
+    .camera-icon {
+      font-size: 36px;
+      margin-bottom: 10px;
+  }
       
       #photo-gallery {
         display: grid;
@@ -144,7 +181,8 @@
       }
       
       .photo-empty {
-        color: #999;
+        color: var(--tx-color);
+        min-width: 250px;
       }
 
       .live-photo {
@@ -278,4 +316,96 @@
     
     .delete-song-button::after {
       transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
+    #setlist-list {
+      padding-left: 30px;
+  }
+
+    #song-title,
+    .setlist_area {
+      position: relative;
+      width: 100%;
+        max-width: 350px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 5px;
+        font-size: 16px;
+        color: #000;
+        background-color: #fff;
+        outline: none;
+    }
+
+    .add_music,
+    #save-memo-button {
+      padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+
+        background: linear-gradient(
+            90deg,
+            #7c3aed,
+            #c026d3
+        );
+
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+
+        cursor: pointer;
+        margin-left: 20px;
+    }
+
+    .setlist-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#edit-button {
+  position: relative;
+  right: 65px;
+    background: transparent;
+    border: none;
+    color: #777;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+#edit-button:hover {
+    color: #a020f0;
+}
+
+    #live-memo {
+      position: relative;
+      width: 100%;
+        max-width: 450px;
+        margin-top: 10px;
+        padding: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.12);
+        border-radius: 5px;
+        font-size: 16px;
+        color: #000;
+        background-color: #fff;
+        outline: none;
+    }
+
+    .setlist-section,
+    .memo-section {
+        border-top: 1px solid rgba(0, 0, 0, 0.15);
+        padding-top: 20px;
+        margin-top: 25px;
+    }
+
+    /* footer */
+    footer{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    
+      height: 50px;
+      background-color: #000;
+      font-size: 15px;
+      color: #fff;
     }

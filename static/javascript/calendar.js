@@ -96,6 +96,8 @@ function displayCalendarEvents(events) {
   notImportedEvents.forEach((event) => {
     const eventElement = document.createElement("article");
     eventElement.classList.add("calendar-event");
+
+    console.log("events:", events)
   
     const title = event.summary ?? "タイトルなし";
     const start =

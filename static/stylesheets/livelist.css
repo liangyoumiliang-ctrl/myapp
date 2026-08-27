@@ -26,6 +26,11 @@
         margin-right: 5%;
     }
 
+    .colorchange {
+        position: absolute;
+        left: 5%;
+    }
+
     .header-nav nav a {
         color: #fff;
         text-decoration: none;  
@@ -40,26 +45,16 @@
     .live-list-page {
         padding: 200px 40px 20px;
         min-height:calc(100vh - 110px);
-        background:
-            radial-gradient(
-            circle at 75% 30%,
-            rgba(255, 210, 0, 0.15),
-            transparent 35%
-            ),
-            linear-gradient(
-            180deg,
-            #050505 0%,
-            #111111 100%
-            );
-        color: black;
+        background:var(--bg-color);
     }
 
     .live-list h1 {
-        color: #fff;
+        color: var(--tx-color);
         margin: 0 0 0 150px;
     }
 
     .button {
+        font-family: Arial;
         background-color: #17b717; /* 基本の赤色 */
         color: #ffffff;            /* 文字色：白 */
         border: none;              /* 枠線なし */
@@ -256,16 +251,18 @@
         color:#fff;
     }
 
-    .content{
+    .content,
+    .content_button {
         position:relative;
         z-index:3;
 
-        color:white;
+        color:var(--tx-color);
         text-align:center;
 
         top:50%;
         transform:translateY(-50%);
     }
+
 
     .empty {
         text-align: center;

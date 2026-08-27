@@ -26,6 +26,11 @@
         margin-right: 5%;
     }
 
+    .colorchange {
+        position: absolute;
+        left: 5%;
+    }
+
     a {
         color: #fff;
         text-decoration: none;
@@ -38,54 +43,62 @@
     .main {
         padding: 200px 40px 20px;
         min-height:calc(100vh - 110px);
-        background:
-            radial-gradient(
-            circle at 75% 30%,
-            rgba(255, 210, 0, 0.15),
-            transparent 35%
-            ),
-            linear-gradient(
-            180deg,
-            #050505 0%,
-            #111111 100%
-            );
-        color: #fff;
+        background:var(--bg-color);
+        color: var(--tx-color);
     }
 
     .prediction-card {
+        position: relative;
         display:flex;
         align-items:center;
         gap:40px;
         border: 1px solid #fff;
         border-radius: 4px;
 
-        max-width:900px;
+        max-height: 65px;
+        max-width: 800px;
         margin:30px auto;
         padding:30px;
 
         box-shadow:
             0 0 40px rgba(138,43,226,.4);
+
+        background: #fff;
     }
 
-    #predict-setlist-button{
-        background-color: #17b717; /* 基本の赤色 */
-        color: #ffffff;            /* 文字色：白 */
-        border: none;              /* 枠線なし */
-        padding: 10px 18px;         /* 余白（上下 左右） */
-        font-size: 16px;           /* 文字サイズ */
-        border-radius: 8px;        /* 角丸 */
-        cursor: pointer;           /* カーソルをポインターに */
-        transition: background-color 0.2s ease; /* ホバー時の滑らかな変化 */
-        text-decoration: none;
-        margin: 5px;
+    button {
+        padding: 12px 28px;
+
+        border: none;
+        border-radius: 999px;
+
+        background: linear-gradient(
+            90deg,
+            #7c3aed,
+            #c026d3
+        );
+
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+
+        cursor: pointer;
+        margin: 30px;
     }
 
-    #predict-setlist-button:hover {
-        background-color: #0a820a;
+    button:hover {
+        background: linear-gradient(
+            90deg,
+            #5a1ec3,
+            #871497
+        );
     }
 
-    #predict-setlist-button:active {
-        background-color: #045004;
+    button:active {
+        background: linear-gradient(
+        90deg,
+        #38098a
+    );
     }
 
     .artwork-area{
@@ -95,37 +108,53 @@
     }
 
     .song-number{
-        font-size:26px;
+        font-size:12px;
         font-weight:bold;
         margin-bottom:15px;
+        color: #000;
     }
 
     .prediction-artwork{
-        width:180px;
-        height:180px;
+        width:60px;
+        height:60px;
     
         border-radius:15px;
     
         object-fit:cover;
     }
 
+    .live-info {
+        text-align: center;
+        color: var(--tx-color);
+    }
+
+    .song-info {
+        margin-top: 30px;
+    }
+
     .song-info h3{
+        font-size: 24px;
         flex:1;
 
         text-align:left;
+        color: #000;
     }
 
     .song-info p {
         font-size:18px;
-        color:#666;
+        color:#333;
 
         margin-bottom:30px;
     }
 
-    .song-info a{
+    .song-link a{
+        position: absolute;
+        top: 40%;
+        right: 5%;
+
         display:inline-block;
     
-        padding:12px 24px;
+        padding:10px 20px;
     
         background:#A259FF;
         color:white;
@@ -134,10 +163,23 @@
         border-radius:10px;
     
         transition:.2s;
+
+        font-size: smaller;
     }
     
-    .song-info a:hover{
+    .song-link a:hover{
         background:#8b3dff;
+    }
+
+    .content{
+        position:relative;
+        z-index:3;
+
+        color: var(--vx-color);
+        text-align:center;
+
+        top:50%;
+        transform:translateY(-50%);
     }
 
     

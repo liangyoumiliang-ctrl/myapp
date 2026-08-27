@@ -76,8 +76,16 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
 
         <button type="button" class="detail-button" data-id="${escapeHtml(live.id)}">
-            Reminisce
+            REMINISCE
         </button>
+
+        <button
+          type="button"
+          class="button playlist"
+          data-id="${escapeHtml(live.id)}">
+          PLAY LIST
+        </button>
+
         </div>
 
         <div class="live-date-area">
@@ -113,6 +121,16 @@ document.addEventListener("DOMContentLoaded", () => {
         window.location.href = `/history-detail/${encodeURIComponent(id)}`;
     });
     });
+
+    document
+      .querySelectorAll(".playlist")
+      .forEach((button) => {
+        button.addEventListener("click", () => {
+          const liveId = button.dataset.id;
+          window.location.href = 
+          `/playlist/${encodeURIComponent(liveId)}`;
+        });
+      });
 
     document
     .querySelectorAll(".delete-button")

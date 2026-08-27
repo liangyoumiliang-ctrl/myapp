@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <title>Live List</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/livelist.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/thema.css') }}">
   </head>
 
   <body>
     <header class="header-nav">
+      <div class="colorchange">
+        <nav><a href="#" id="theme-toggle">Light/Dark</a></nav>
+      </div>
         <nav><a href="{{ url_for('home')}}">Home</a></nav>
         <nav><a href="{{ url_for('livelist')}}">Live List</a></nav>
         <nav><a href="{{ url_for('history')}}">History</a></nav>
@@ -20,6 +24,8 @@
           <p class="page-description">
             登録したライブ予定を確認・管理できます。
           </p>
+        </div>
+        <div class="content_button">
           <br>
           <a href="{{ url_for('addlive')}}" class="button add">
             Add Live
@@ -39,6 +45,7 @@
     </div>
 
     <script src="{{ url_for('static', filename='javascript/livelist.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='javascript/thema.js') }}" defer></script>
 
     <footer>
       <small>© 2020 米良諒祐 All Rights Reserved.</small>

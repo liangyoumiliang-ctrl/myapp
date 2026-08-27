@@ -26,6 +26,11 @@
         margin-right: 5%;
     }
 
+    .colorchange {
+        position: absolute;
+        left: 5%;
+    }
+
     a {
         color: #fff;
         text-decoration: none;
@@ -38,18 +43,22 @@
     .main {
         padding: 200px 40px 20px;
         min-height:calc(100vh - 110px);
-        background:
-            radial-gradient(
-            circle at 75% 30%,
-            rgba(255, 210, 0, 0.15),
-            transparent 35%
-            ),
-            linear-gradient(
-            180deg,
-            #050505 0%,
-            #111111 100%
-            );
-        color: #fff;
+        background:var(--bg-color);
+        color:var(--tx-color);
+    }
+    .content{
+        position:relative;
+        z-index:3;
+
+        color:var(--tx-color);
+        text-align:center;
+
+        top:50%;
+        transform:translateY(-50%);
+    }
+
+    .live-info {
+        text-align: center;
     }
 
     .playlist-card {
@@ -60,13 +69,15 @@
         border: 1px solid #fff;
         border-radius: 4px;
 
-        max-width:45%;
-        max-height: 60px;
-        margin:30px 0;
+        max-height: 65px;
+        max-width: 800px;
+        margin:30px auto;
         padding:30px;
 
         box-shadow:
             0 0 40px rgba(138,43,226,.4);
+
+        background: #fff;
     }
 
     #predict-setlist-button{
@@ -97,9 +108,10 @@
     }
 
     .song-number{
-        font-size:26px;
+        font-size:12px;
         font-weight:bold;
         margin-bottom:15px;
+        color: #000;
     }
 
     .playlist-artwork{
@@ -111,24 +123,28 @@
         object-fit:cover;
     }
 
+    .song-info {
+        margin-top: 30px;
+    }
     .song-info h3{
-        font-size: 20px;
+        font-size: 24px;
         flex:1;
 
         text-align:left;
+        color: #000;
     }
 
     .song-info p {
         font-size:18px;
-        color:#666;
+        color:#333;
 
         margin-bottom:30px;
     }
 
     .song-link a{
         position: absolute;
-        top: 60%;
-        right: 8%;
+        top: 40%;
+        right: 5%;
 
         display:inline-block;
     
@@ -147,6 +163,41 @@
     
     .song-link a:hover{
         background:#8b3dff;
+    }
+
+    button {
+        padding: 12px 28px;
+
+        border: none;
+        border-radius: 999px;
+
+        background: linear-gradient(
+            90deg,
+            #7c3aed,
+            #c026d3
+        );
+
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+
+        cursor: pointer;
+        margin: 30px;
+    }
+
+    button:hover {
+        background: linear-gradient(
+            90deg,
+            #5a1ec3,
+            #871497
+        );
+    }
+
+    button:active {
+        background: linear-gradient(
+        90deg,
+        #38098a
+    );
     }
 
     

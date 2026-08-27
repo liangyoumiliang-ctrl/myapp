@@ -25,6 +25,11 @@
     .header-nav nav{
         margin-right: 5%;
     }
+
+    .colorchange {
+      position: absolute;
+      left: 5%;
+    }
   
   .hero{
     position: relative;
@@ -38,18 +43,22 @@
 .overlay{
     position:absolute;
     inset:0;
-    background:rgba(0,0,0,0.7); /* ←ここで暗さを調整 */
+    background:var(--bg-home-over);
 }
 
 .content{
     position:relative;
     z-index:3;
 
-    color:white;
+    color:var(--tx-color);
     text-align:center;
 
     top:50%;
     transform:translateY(-50%);
+}
+.content p, span {
+  font-size: 20px;
+  font-weight: bold;
 }
 .scroll-guide {
     display: block;
@@ -78,18 +87,14 @@
 
     height:180px;
 
-    background:linear-gradient(
-        to bottom,
-        rgba(255,255,255,0),
-        #121212
-    );
+    background:var(--bg-home-bitween);
 
     z-index:2;
 }
 
 
   #home-section {
-    background: #121212;
+    background:var(--bg-home-color);
     padding: 100px 40px 20px;
   }
   
@@ -98,21 +103,16 @@
   
     background-color: white;
     border-radius: 20px;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
-        0 0 30px rgba(255, 215, 0, 0.3);
+    box-shadow: var(--box-shadow);
   }
 
   .next-live {
     grid-row:1 / 3;      /* 1～2行分使う */
     min-height:600px;
   }
-  
-  .playlist {
-    min-height:250px;
-  }
 
   .history {
-    min-height:250px;
+    min-height:600px;
   }
   
   .card h2 {
@@ -147,11 +147,6 @@
     max-width:1300px;
     margin: 0 auto;
 
-  }
-
-  .next-live {
-    grid-row: 1 / 3;
-    min-height: 600px;
   }
   
   .next-live h3 {

@@ -30,14 +30,16 @@ function displayLiveInfo() {
     .trim();
 
     container.innerHTML = `
-    <h2>${escapeHtml(artistName)}</h2>
-    <p>Date : ${escapeHtml(formatLiveDate(live.start))}
+    <div class="live-info">
+    <h1>${escapeHtml(artistName)}</h1>
+    <p>DATE : ${escapeHtml(formatLiveDate(live.start))}
     </p>
-    <p>Place : ${escapeHtml(live.location ?? "会場未登録")}
+    <p>PLACE : ${escapeHtml(live.location ?? "会場未登録")}
     </p>
     <button type="button" id="predict-setlist-button">
     AIでセトリを予想
     </button>
+    </div>
     `;
     document
     .getElementById("predict-setlist-button")
@@ -143,6 +145,8 @@ function displayPrediction(result) {
             </h3>
             
             <p>${escapeHtml(song.album)}</p>
+        </div>
+        <div class="song-link">
             
             <a href="${song.url}
             target="_blank"

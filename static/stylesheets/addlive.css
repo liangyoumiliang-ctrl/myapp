@@ -26,6 +26,11 @@
         margin-right: 5%;
     }
 
+    .colorchange {
+        position: absolute;
+        left: 5%;
+    }
+
     a {
         color: #fff;
         text-decoration: none;
@@ -40,31 +45,32 @@
     .mainpage {
         padding: 200px 40px 20px;
         min-height: 100vh;
-        background:
-        radial-gradient(
-        circle at 75% 30%,
-        rgba(255, 210, 0, 0.15),
-        transparent 35%
-        ),
-        linear-gradient(
-        180deg,
-        #050505 0%,
-        #111111 100%
-        );
-        color: white;
+        background:var(--bg-color);
+        color:var(--tx-color);
     }
 
-    .content {
-        text-align: center;
+    .content,
+    .content_button {
+        position:relative;
+        z-index:3;
+
+        color:var(--tx-color);
+        text-align:center;
+
+        top:50%;
+        transform:translateY(-50%);
     }
     
     .content h1,
     .content p {
-        color: white;
+        color:var(--tx-color);
     }
 
     .status-area {
         text-align: center;
+        margin: 30px auto;
+        font-size: 20px;
+        font-weight: bold;
     }
 
     .scroll-guide {
@@ -90,8 +96,8 @@
         background-color: #17b717; /* 基本の赤色 */
         color: #ffffff;            /* 文字色：白 */
         border: none;              /* 枠線なし */
-        padding: 8px 16px;         /* 余白（上下 左右） */
-        font-size: 18px;           /* 文字サイズ */
+        padding: 12px 24px;         /* 余白（上下 左右） */
+        font-size: 20px;           /* 文字サイズ */
         border-radius: 8px;        /* 角丸 */
         cursor: pointer;           /* カーソルをポインターに */
         transition: background-color 0.2s ease; /* ホバー時の滑らかな変化 */
@@ -105,7 +111,7 @@
 
 
     .add-live-page {
-        height: 800px;
+        min-height: 800px;
     }
 
     .card-container {
@@ -209,8 +215,7 @@
         padding: 30px;
         background-color: #fff;
         border-radius: 20px;
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5),
-        0 0 30px rgba(255, 215, 0, 0.3);
+        box-shadow: var(--box-shadow);
     }
 
     .input {

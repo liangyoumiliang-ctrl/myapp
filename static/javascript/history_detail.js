@@ -212,15 +212,16 @@ function displaySetlist() {
 
   if (setlist.length === 0) {
     list.innerHTML = `
-      <li class="setlist-empty">
+      <p class="setlist-empty">
         セットリストはまだ登録されていません。
-      </li>
+      </p>
     `;
     return;
   }
 
-  setlist.forEach((song, index) => {
+  setlist.forEach((song) => {
     const item = document.createElement("li");
+    item.textContent = song;
 
     item.classList.add("setlist-item");
 

@@ -13,28 +13,36 @@
     rel="stylesheet"
     href="{{ url_for('static', filename='stylesheets/history_detail.css') }}"
   >
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/thema.css') }}">
 </head>
 
 <body data-live-id="{{ live_id }}">
   <header class="header-nav">
+    <div class="colorchange">
+      <nav><a href="#" id="theme-toggle">Light/Dark</a></nav>
+    </div>
     <nav><a href="{{ url_for('home') }}">Home</a></nav>
     <nav><a href="{{ url_for('livelist') }}">Live List</a></nav>
     <nav><a href="{{ url_for('history') }}">History</a></nav>
   </header>
 
   <main class="history-detail-page">
-    <a
-      href="{{ url_for('history') }}"
-      class="back-link">
-      ← Historyへ戻る
-    </a>
+    <div class="content">
+      <p>LIVE REMINISCE</p>
+      <h1>ライブ履歴詳細</h1>
+      <p>ライブの思い出を振り返ろう</p>
+    </div>
+ 
     <div class="twopage">
     <div class="live-card">
     <section id="live-detail"></section>
     <br>
 
     <section class="setlist-section">
-      <h2>Setlist</h2>
+      <div class="setlist-header">
+        <h2>Setlist</h2>
+        <button type="button" id="edit-button">編集</button>
+    </div>
 
       <form id="setlist-form">
         <input
@@ -44,13 +52,14 @@
           required
         >
 
-        <button type="submit">
-          曲を追加
+        <button type="submit" class="add_music">
+          + 追加
         </button>
       </form>
 
+      <div class="setlist_area">
       <ol id="setlist-list"></ol>
-      <button type="button" id="edit-button">編集</button>
+    </div>
     </section>
     <br>
 
@@ -73,7 +82,8 @@
         <h2>Photos</h2>
       
         <label for="photo-input" class="photo-add-button">
-          ＋ 写真を追加
+          <span class="camera-icon">📷</span>
+          <span>＋ 写真を追加</span>
         </label>
       
         <input
@@ -117,5 +127,9 @@
     src="{{ url_for('static', filename='javascript/history_detail.js') }}"
     defer>
   </script>
+  <script src="{{ url_for('static', filename='javascript/thema.js') }}" defer></script>
+  <footer>
+    <small>© 2020 米良諒祐 All Rights Reserved.</small>
+ </footer>
 </body>
 </html>

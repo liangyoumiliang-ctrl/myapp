@@ -367,8 +367,8 @@ def playlist(live_id):
     return render_template("playlist.html", live_id=live_id)
 
 
-@app.route("/playlist-make", methods=["POST"])
-def playlist_make():
+@app.route("/playlist-make-beginner", methods=["POST"])
+def playlist_make_beginner():
     data = request.get_json()
     artist_name = data["artist"]
 
@@ -378,6 +378,51 @@ def playlist_make():
     あなたはライブのプレイリストを作成するAIです
     アーティスト : {artist_name}
     初心者向けのプレイリストを作成してください
+    20曲で提示
+    
+    JSONの見返してください
+    
+    {{
+        "playlist":[
+            "曲名1",
+            "曲名2"
+        ]
+    }}
+    """
+
+    response = gemini_client.interactions.create(model="gemini-3.6-flash", input=prompt)
+    print("Gemini response:", response.output_text)
+
+    text = response.output_text.strip()
+
+    if text.startswith("```json"):
+        text = text[7:]
+
+    if text.endswith("```"):
+        text = text[:-3]
+
+    text = text.strip()
+
+    result = json.loads(text)
+
+    songs = result["playlist"]
+
+    details = get_song_details(songs, artist_name)
+
+    return jsonify(details)
+
+
+@app.route("/playlist-make-core", methods=["POST"])
+def playlist_make_core():
+    data = request.get_json()
+    artist_name = data["artist"]
+
+    artist = search_setlist_artist(artist_name)
+
+    prompt = f"""
+    あなたはライブのプレイリストを作成するAIです
+    アーティスト : {artist_name}
+    コアファン向けのプレイリストを作成してください
     20曲で提示
     
     JSONの見返してください

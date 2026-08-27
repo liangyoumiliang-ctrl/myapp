@@ -10,6 +10,7 @@
   >
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/thema.css') }}">
 
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/ja.js"></script>
@@ -18,12 +19,16 @@
 
 <body>
   <header class="header-nav">
+    <div class="colorchange">
+      <nav><a href="#" id="theme-toggle">Light/Dark</a></nav>
+    </div>
     <nav><a href="{{ url_for('home') }}">Home</a></nav>
     <nav><a href="{{ url_for('livelist') }}">Live List</a></nav>
     <nav><a href="{{ url_for('history') }}">History</a></nav>
   </header>
 
   <div class="history-page">
+    <div class="history-content">
     <div class="page-header">
       <div class="content">  
       <p>LIVE HISTORY</p>
@@ -33,6 +38,13 @@
     </div>
 
     <section id="history-list"></section>
+    <div class="status-area">
+      <span class="scroll-guide">
+          ライブ情報を入力<br>
+          <span class="arrow">⇩</span>
+        </span>
+      </div>
+    </div>
 
     <section class="history-add-section">
         <div class="card-container">
@@ -42,19 +54,19 @@
         <form id="history-add-form">
             <div class="wrap">
                 <input class="textbox" type="text" id="history-artist">
-                <label class="label">Artist</label>
+                <label class="label">ARTIST</label>
             </div>
             <div class="wrap">
                 <input class="textbox" type="date" id="history-live-date" placeholder="ライブ日を選択">
-                <label class="label">Date</label>
+                <label class="label">DATE</label>
             </div>
             <div class="wrap">
                 <input class="textbox" type="time" id="history-start-time" placeholder="開演時間を選択">
-                <label class="label" >Time</label>
+                <label class="label" >TIME</label>
             </div>
             <div class="wrap">
                 <input class="textbox" type="text" id="history-venue">
-                <label class="label">Place</label>
+                <label class="label">PLACE</label>
             </div>
             <br>
             <div class="button-area">
@@ -77,6 +89,11 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
 <script src="{{ url_for('static', filename='javascript/inputtext.js') }}" defer></script>
+<script src="{{ url_for('static', filename='javascript/thema.js') }}" defer></script>
+<script src="{{ url_for('static', filename='javascript/playlist.js') }}" defer></script>
 </div>
+<footer>
+  <small>© 2020 米良諒祐 All Rights Reserved.</small>
+</footer>
 </body>
 </html>

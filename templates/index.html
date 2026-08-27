@@ -4,12 +4,16 @@
     <meta charset="utf-8">
     <title>Live Home</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/index.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/thema.css') }}">
   </head>
   <body><!--このbody要素の中に書きます-->
      <header class="header-nav">
+        <div class="colorchange">
+          <nav><a href="#" id="theme-toggle">Light/Dark</a></nav>
+        </div>
         <nav><a href="{{ url_for('home')}}">Home</a></nav>
         <nav><a href="{{ url_for('livelist') }}">Live List</a></nav>
-        <nav><a href="{{ url_for('history')}}">Hsitory</a></nav>
+        <nav><a href="{{ url_for('history')}}">History</a></nav>
      </header>
      <div class="hero">
         <div class="overlay"></div>
@@ -39,11 +43,6 @@
               </div>
             </div>
         
-            <div class="card playlist">
-              <h3>プレイリスト</h3>
-              <p>ライブ予習用プレイリスト</p>
-            </div>
-        
             <div class="card history">
               <h3>Live History</h3>
               <div class="history-empty">
@@ -57,6 +56,7 @@
       </section>
 
      <script src="{{ url_for('static', filename='javascript/index.js') }}" defer></script>
+     <script src="{{ url_for('static', filename='javascript/thema.js') }}" defer></script>
      <footer>
         <small>© 2020 米良諒祐 All Rights Reserved.</small>
      </footer>
