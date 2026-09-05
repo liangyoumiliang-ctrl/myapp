@@ -122,18 +122,6 @@ def search_setlist_artist(artist_name):
     return response.json()
 
 
-@app.route("/test-setlist")
-def test_setlist():
-
-    mbid = "6ef00829-fa94-4fee-a5a6-b28e1208e96a"
-
-    data = get_artist_setlists(mbid)
-
-    counter = count_encore_songs(data)
-
-    return jsonify(counter.most_common(20))
-
-
 def get_artist_setlists(mbid):
     url = f"https://api.setlist.fm/rest/1.0/artist/{mbid}/setlists"
 
@@ -215,12 +203,6 @@ def search_itunes(song_name, artist_name):
     return response.json()
 
 
-@app.route("/test-itunes")
-def test_itunes():
-    data = search_itunes("The Beginning", "ONE OK ROCK")
-    return jsonify(data)
-
-
 def get_song_details(song_names, artist_name):
     song_details = []
     for song_name in song_names:
@@ -254,37 +236,6 @@ def test_itunes_list():
 # Genimi API
 
 gemini_client = genai.Client(api_key=GEMINI_API_KEY)
-
-
-@app.route("/test-gemini")
-def test_gemini():
-    prompt = f"""
-    アーティスト: ONE OK ROCK
-
-    過去20公演の演奏回数
-
-    The Beginning : 20
-    Renegades : 18
-    We are : 17
-    Save Yourself : 16
-
-    この情報を参考に
-    次回ライブのセットリストを20曲予想してください。
-
-    JSONのみ返してください。
-
-    {{
-    "setlist": [
-        "曲名1",
-        "曲名2"
-    ]
-    }}
-    """
-    response = gemini_client.interactions.create(model="gemini-3.6-flash", input=prompt)
-    result = json.loads(response.output_text)
-    songs = result["setlist"]
-    details = get_song_details(songs, "ONE OK ROCK")
-    return jsonify(details)
 
 
 @app.route("/setlist-prediction/<live_id>")

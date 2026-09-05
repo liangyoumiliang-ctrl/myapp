@@ -7,20 +7,35 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/thema.css') }}">
   </head>
   <body><!--このbody要素の中に書きます-->
-     <header class="header-nav">
-        <div class="colorchange">
-          <nav><a href="#" id="theme-toggle">Light/Dark</a></nav>
-        </div>
-        <nav><a href="{{ url_for('home')}}">Home</a></nav>
-        <nav><a href="{{ url_for('livelist') }}">Live List</a></nav>
-        <nav><a href="{{ url_for('history')}}">History</a></nav>
-     </header>
+    <header class="header-nav">
+
+      <div class="header-left">
+        <a href="{{ url_for('home') }}" class="header-logo">
+          <img
+      src="{{ url_for('static', filename='images/Re_Live.png') }}"
+      alt="Re:Live"
+    >
+        </a>
+      </div>
+    
+      <nav class="header-center">
+        <a href="{{ url_for('home') }}">Home</a>
+        <a href="{{ url_for('livelist') }}">Live List</a>
+        <a href="{{ url_for('history') }}">History</a>
+      </nav>
+    
+      <div class="header-right">
+        <a href="#" id="theme-toggle">☀</a>
+      </div>
+    
+    </header>
      <div class="hero">
         <div class="overlay"></div>
       
         <div class="content">
-          <h1>次のライブを、もっと楽しもう。</h1>
-          <p>ライブ予定を登録するだけでAIが予習プレイリストを作成</p>
+          <h1>ライブの前も、終わったあとも。</h1>
+          <br>
+          <p>AIでライブに備えて、思い出を残そう</p>
           <span class="scroll-guide">
             あなたのライブへ<br>
             <span class="arrow">⇩</span>
@@ -37,10 +52,15 @@
                     <a href="{{ (url_for('livelist'))}}">すべて見る →</a>
                 </div>
               </div>
+              <div class="option-area">
+              <h4>Option</h4>
+              <div class="text-area">
+              <h5>セトリ予想とプレイリスト提案</h5>
               <div class="setlist-area">
-                <h4>AIセトリ予想</h4>
                 <div id="predict-setlist"></div>
               </div>
+            </div>
+            </div>
             </div>
         
             <div class="card history">
@@ -51,6 +71,15 @@
                     <a href="{{ url_for('history')}}">すべて見る →</a>
                 </div>
               </div>
+              <div class="option-area">
+                <h4>Option</h4>
+                <div class="text-area">
+                <h5>ライブの思い出とプレイリスト提案</h5>
+                <div class="setlist-area">
+                  <div id="history-playlist"></div>
+                </div>
+              </div>
+              </div>
             </div>
           </div>
       </section>
@@ -58,7 +87,7 @@
      <script src="{{ url_for('static', filename='javascript/index.js') }}" defer></script>
      <script src="{{ url_for('static', filename='javascript/thema.js') }}" defer></script>
      <footer>
-        <small>© 2020 米良諒祐 All Rights Reserved.</small>
+        <small>© 2026 Re:Live All Rights Reserved.</small>
      </footer>
   </body>
 </html>

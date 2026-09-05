@@ -3,7 +3,7 @@
     /* background */
     --bg-color:radial-gradient(
         circle at 75% 30%,
-        rgba(255, 210, 0, 0.15),
+        rgba(255, 208, 0, 0.317),
         transparent 35%
         ),
         linear-gradient(
@@ -64,4 +64,8 @@ body.light-mode {
     --tx-color:#000;
 
     --bg-camera:rgba(255, 255, 255, 0.4);
+}
+
+#theme-toggle {
+    font-size: 22px;
 }

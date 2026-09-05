@@ -8,14 +8,28 @@
 </head>
 
 <body data-live-id="{{ live_id }}">
-    <header class="header-nav">
-      <div class="colorchange">
-        <nav><a href="#" id="theme-toggle">Light/Dark</a></nav>
-      </div>
-        <nav><a href="{{ url_for('home')}}">Home</a></nav>
-        <nav><a href="{{ url_for('livelist') }}">Live List</a></nav>
-        <nav><a href="{{ url_for('history')}}">History</a></nav>
-     </header>
+  <header class="header-nav">
+
+    <div class="header-left">
+      <a href="{{ url_for('home') }}" class="header-logo">
+        <img
+    src="{{ url_for('static', filename='images/Re_Live.png') }}"
+    alt="Re:Live"
+  >
+      </a>
+    </div>
+  
+    <nav class="header-center">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('livelist') }}">Live List</a>
+      <a href="{{ url_for('history') }}">History</a>
+    </nav>
+  
+    <div class="header-right">
+      <a href="#" id="theme-toggle">☀</a>
+    </div>
+  
+  </header>
 <div class="main">
 
   <div class="content">
@@ -36,5 +50,8 @@
   </script>
   <script src="{{ url_for('static', filename='javascript/thema.js') }}" defer></script>
   </div>
+  <footer>
+    <small>© 2026 Re:Live All Rights Reserved.</small>
+ </footer>
 </body>
 </html>

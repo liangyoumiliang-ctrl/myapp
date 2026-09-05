@@ -49,13 +49,13 @@ function displayNextLive() {
 
     const predict_container = document.getElementById("predict-setlist");
 
-    const prediction = JSON.parse(localStorage.getItem(`prediction-${nextlive.id}`))
-
     predict_container.innerHTML = `
-    <p>ライブ予定を登録すると、過去のセトリや人気曲から予想します。</p>
     <div class="button-area">
     <button type="button" class="button prediction" data-id="${escapeHtml(nextlive.id)}">
     セトリ予想
+    </button>
+    <button type="button" class="button playlist" data-id="${escapeHtml(nextlive.id)}">
+    PLAY LIST
     </button>
     </div>
     `;
@@ -66,6 +66,14 @@ function displayNextLive() {
             const nextliveId = button.dataset.id;
             window.location.href = 
             `/setlist-prediction/${encodeURIComponent(nextliveId)}`;
+        });
+    });
+    document
+    .querySelectorAll(".playlist")
+    .forEach((button) => {
+        button.addEventListener("click", () => {
+            const nextliveId = button.dataset.id;
+            window.location.href = `/playlist/${encodeURIComponent(nextliveId)}`;
         });
     });
 }
@@ -113,6 +121,36 @@ function displayLiveHistory() {
             <p>場所 ${escapeHtml(history.location)}</p>
         </article>
     `;
+
+    const history_container = document.getElementById("history-playlist");
+
+    history_container.innerHTML = `
+    <div class="button-area">
+    <button type="button" class="button detail" data-id="${escapeHtml(history.id)}">
+    REMINISCE
+    </button>
+    <button type="button" class="button playlist" data-id="${escapeHtml(history.id)}">
+    PLAY LIST
+    </button>
+    </div>
+    `;
+    document
+    .querySelectorAll(".detail")
+    .forEach((button) => {
+        button.addEventListener("click", () => {
+            const historyId = button.dataset.id;
+            window.location.href = 
+            `/history-detail/${encodeURIComponent(historyId)}`;
+        });
+    });
+    document
+    .querySelectorAll(".playlist")
+    .forEach((button) => {
+        button.addEventListener("click", () => {
+            const historyId = button.dataset.id;
+            window.location.href = `/playlist/${encodeURIComponent(historyId)}`;
+        });
+    });
 
 }
 
