@@ -3,3 +3,6 @@ google-genai>=2.17.0
 python-dotenv>=1.2.3
 requests>=2.34.2
 gunicorn
+Authlib
+psycopg2-binary
+cloudinary
