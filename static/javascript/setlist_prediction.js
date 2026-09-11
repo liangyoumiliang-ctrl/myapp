@@ -89,7 +89,7 @@ async function predictSetlist(){
         },
         body: JSON.stringify({
             artist: live.artist.trim(),
-            date: live.start,
+            date: live.live_date,
             venue: live.venue || ""
         })
     });

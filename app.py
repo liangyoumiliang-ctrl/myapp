@@ -1900,9 +1900,12 @@ def setlist_prediction(live_id):
 @app.route("/predict-setlist", methods=["POST"])
 def predict_setlist():
     data = request.get_json()
-    artist_name = data["artist"]
-    live_date = data["date"]
-    venue = data["venue"]
+    print("予想API受信データ:", data)
+    artist_name = data.get("artist", "").strip()
+    live_date = data.get("date", "").strip()
+    venue = data.get("venue", "").strip()
+    if not artist_name or not live_date:
+        return jsonify({"error": "artist または date がありません。"}), 400
 
     artist = search_setlist_artist(artist_name)
     mbid = artist["artist"][0]["mbid"]
