@@ -50,9 +50,18 @@
       }
       
       .header-right {
-        justify-self: end;
-        margin-right: 8%;
-      }
+    justify-self: end;
+    margin-right: 8%;
+
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .login-area {
+    width: 80px;
+    text-align: center;
+  }
 
     a {
         color: #fff;
@@ -89,7 +98,7 @@
         background: #fff;
     }
 
-    button {
+    #predict-setlist-button {
         padding: 12px 28px;
 
         border: none;
@@ -109,7 +118,7 @@
         margin: 30px;
     }
 
-    button:hover {
+    #predict-setlist-button:hover {
         background: linear-gradient(
             90deg,
             #5a1ec3,
@@ -117,7 +126,7 @@
         );
     }
 
-    button:active {
+    #predict-setlist-button:active {
         background: linear-gradient(
         90deg,
         #38098a
@@ -204,6 +213,17 @@
         top:50%;
         transform:translateY(-50%);
     }
+
+    footer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      
+        height: 50px;
+        background-color: #000;
+        font-size: 15px;
+        color: #fff;
+      }
 
     
 

@@ -50,9 +50,18 @@
       }
       
       .header-right {
-        justify-self: end;
-        margin-right: 8%;
-      }
+    justify-self: end;
+    margin-right: 8%;
+
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .login-area {
+    width: 80px;
+    text-align: center;
+  }
 
     a {
         color: #fff;
@@ -111,6 +120,13 @@
         display: flex;
         gap: 50px;
         margin-bottom: 35px;
+    }
+
+    .empty {
+        text-align: center;
+        margin-top: 100px;
+        color: var(--tx-color);
+        line-height: 3;
     }
 
     .live-meta p {

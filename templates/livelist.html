@@ -5,6 +5,7 @@
     <title>Live List</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/livelist.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/thema.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/header.css') }}">
   </head>
 
   <body>
@@ -26,7 +27,28 @@
       </nav>
     
       <div class="header-right">
-        <a href="#" id="theme-toggle">☀</a>
+        <button type="button" id="theme-toggle"></button>
+        <div class="login-area">
+        {% if user %}
+          <div class="user-menu">
+            <button type="button" class="user-menu-button" id="user-menu-button">
+              {{ user.display_name }}
+              <span class="menu-arrow">⬇︎</span>
+            </button>
+
+            <div class="user-dropdown" id="user-dropdown">
+              <div class="user-info">
+                <span>{{ user.display_name }}</span>
+                <small>{{ user.email }}</small>
+              </div>
+              <a href="{{ url_for('login_change') }}">Account Change</a>
+              <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+          </div>
+        {% else %}
+          <a href="{{ url_for('login') }}">Login </a>
+        {% endif %}
+        </div>
       </div>
     
     </header>
@@ -41,9 +63,11 @@
         </div>
         <div class="content_button">
           <br>
+          {% if user %}
           <a href="{{ url_for('addlive')}}" class="button add">
             Add Live
           </a>
+          {% endif %}
         </div>
 
       <section class="live-list">
@@ -60,6 +84,7 @@
 
     <script src="{{ url_for('static', filename='javascript/livelist.js') }}" defer></script>
     <script src="{{ url_for('static', filename='javascript/thema.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='javascript/header.js') }}" defer></script>
 
     <footer>
       <small>© 2026 Re:Live All Rights Reserved.</small>

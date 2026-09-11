@@ -64,20 +64,31 @@ document.addEventListener("DOMContentLoaded", () => {
    ライブ情報
 ========================= */
 
-function getSavedLives() {
-  return JSON.parse(
-    localStorage.getItem("liveList")
-  ) ?? [];
+async function getSavedLives() {
+  const response = await fetch("/api/lives");
+
+  if (!response.ok) {
+    throw new Error("ライブ情報の取得に失敗しました。");
+  }
+
+  const savedLives = await response.json();
+
+  return savedLives;
 }
 
-function getCurrentLive() {
-  return getSavedLives().find(
+
+async function getCurrentLive() {
+  const savedLives = await getSavedLives();
+
+  return savedLives.find(
     (live) =>
       String(live.id) === String(CURRENT_LIVE_ID)
   );
 }
 
-function displayLiveDetail() {
+
+async function displayLiveDetail() {
+
   const container =
     document.getElementById("live-detail");
 
@@ -86,86 +97,117 @@ function displayLiveDetail() {
     return;
   }
 
-  const live = getCurrentLive();
 
-  if (!live) {
+  try {
+
+    const live = await getCurrentLive();
+
+    if (!live) {
+
+      container.innerHTML = `
+        <div class="detail-empty">
+          <h2>ライブ情報が見つかりません。</h2>
+          <p>Historyページからもう一度選択してください。</p>
+        </div>
+      `;
+
+      return;
+    }
+
+
+    const artistName = String(
+      live.artist ?? "タイトルなし"
+    ).trim();
+
+
+    const liveStart =
+      `${live.live_date}T${live.start_time || "00:00"}`;
+
+
+    container.innerHTML = `
+      <article class="live-detail-card">
+
+        <p class="detail-label">
+          LIVE HISTORY
+        </p>
+
+        <h1 class="detail-artist">
+          ${escapeHtml(artistName)}
+        </h1>
+
+
+        <div class="detail-information">
+
+          <div class="detail-item">
+
+            <span class="detail-item-label">
+              DATE
+            </span>
+
+            <span>
+              ${escapeHtml(
+                formatLiveDate(liveStart)
+              )}
+            </span>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="detail-item-label">
+              START
+            </span>
+
+            <span>
+              ${escapeHtml(
+                formatLiveTime(liveStart)
+              )}
+            </span>
+
+          </div>
+
+
+          <div class="detail-item">
+
+            <span class="detail-item-label">
+              PLACE
+            </span>
+
+            <span>
+              ${escapeHtml(
+                live.venue || "会場未登録"
+              )}
+            </span>
+
+          </div>
+
+        </div>
+
+      </article>
+    `;
+
+  } catch (error) {
+
+    console.error(
+      "ライブ情報取得エラー:",
+      error
+    );
+
     container.innerHTML = `
       <div class="detail-empty">
-        <h2>ライブ情報が見つかりません。</h2>
-        <p>Historyページからもう一度選択してください。</p>
+        <h2>ライブ情報の取得に失敗しました。</h2>
       </div>
     `;
-    return;
+
   }
-
-  const artistName = String(
-    live.title ?? "タイトルなし"
-  )
-    .replace("ライブ", "")
-    .trim();
-
-  container.innerHTML = `
-    <article class="live-detail-card">
-      <p class="detail-label">
-        LIVE HISTORY
-      </p>
-
-      <h1 class="detail-artist">
-        ${escapeHtml(artistName)}
-      </h1>
-
-      <div class="detail-information">
-        <div class="detail-item">
-          <span class="detail-item-label">
-            DATE
-          </span>
-
-          <span>
-            ${escapeHtml(formatLiveDate(live.start))}
-          </span>
-        </div>
-
-        <div class="detail-item">
-          <span class="detail-item-label">
-            START
-          </span>
-
-          <span>
-            ${escapeHtml(formatLiveTime(live.start))}
-          </span>
-        </div>
-
-        <div class="detail-item">
-          <span class="detail-item-label">
-            PLACE
-          </span>
-
-          <span>
-            ${escapeHtml(
-              live.location ?? "会場未登録"
-            )}
-          </span>
-        </div>
-      </div>
-    </article>
-  `;
 }
 
 /* =========================
    セットリスト
 ========================= */
 
-function getSetlistKey() {
-  return `setlist-${CURRENT_LIVE_ID}`;
-}
-
-function getSetlist() {
-  return JSON.parse(
-    localStorage.getItem(getSetlistKey())
-  ) ?? [];
-}
-
-function addSong(event) {
+async function addSong(event) {
   event.preventDefault();
 
   const input =
@@ -181,24 +223,44 @@ function addSong(event) {
     return;
   }
 
-  const setlist = getSetlist();
+  try {
 
-  setlist.push({
-    id: crypto.randomUUID(),
-    title
-  });
-
-  localStorage.setItem(
-    getSetlistKey(),
-    JSON.stringify(setlist)
-  );
-
-  input.value = "";
-
-  displaySetlist();
+    const response = await fetch(
+      `/api/lives/${encodeURIComponent(CURRENT_LIVE_ID)}/setlist`,
+      {
+        method: "POST",
+  
+        headers: {
+          "Content-Type": "application/json"
+        },
+  
+        body: JSON.stringify({
+          title: title
+        })
+      }
+    );
+  
+    const result = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        result.message || "曲の追加に失敗しました"
+      );
+    }
+  
+    input.value = "";
+  
+    await displaySetlist();
+  
+  } catch (error) {
+  
+    console.error(error);
+  
+    alert("曲を追加できませんでした。");
+  }
 }
 
-function displaySetlist() {
+async function displaySetlist() {
   const list =
     document.getElementById("setlist-list");
 
@@ -206,7 +268,16 @@ function displaySetlist() {
     return;
   }
 
-  const setlist = getSetlist();
+  const response = await fetch(
+    `/api/lives/${encodeURIComponent(CURRENT_LIVE_ID)}/setlist`
+  );
+  
+  const setlist = await response.json();
+  
+  if (!response.ok) {
+    console.error(setlist);
+    return;
+  }
 
   list.innerHTML = "";
 
@@ -274,28 +345,40 @@ function toggleEditMode() {
   button.textContent = isEditMode ? "完了" : "編集";
 }
 
-function deleteSong(songId) {
-  const updatedSetlist = getSetlist().filter(
-    (song) => song.id !== songId
-  );
+async function deleteSong(songId) {
 
-  localStorage.setItem(
-    getSetlistKey(),
-    JSON.stringify(updatedSetlist)
-  );
+  try {
 
-  displaySetlist();
+    const response = await fetch(
+      `/api/lives/${encodeURIComponent(CURRENT_LIVE_ID)}/setlist/${encodeURIComponent(songId)}`,
+      {
+        method: "DELETE"
+      }
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.message || "曲の削除に失敗しました"
+      );
+    }
+
+    await displaySetlist();
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert("曲を削除できませんでした。");
+
+  }
 }
 
 /* =========================
    メモ・感想
 ========================= */
-
-function getMemoKey() {
-  return `memo-${CURRENT_LIVE_ID}`;
-}
-
-function saveMemo() {
+async function saveMemo() {
   const textarea =
     document.getElementById("live-memo");
 
@@ -303,15 +386,37 @@ function saveMemo() {
     return;
   }
 
-  localStorage.setItem(
-    getMemoKey(),
-    textarea.value
-  );
+  try {
+    const response = await fetch(
+      `/api/lives/${encodeURIComponent(CURRENT_LIVE_ID)}/memo`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          memo: textarea.value
+        })
+      }
+    );
 
-  alert("感想を保存しました。");
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.message || "メモの保存に失敗しました"
+      );
+    }
+
+    alert("感想を保存しました。");
+
+  } catch (error) {
+    console.error(error);
+    alert("感想を保存できませんでした。");
+  }
 }
 
-function loadMemo() {
+async function loadMemo() {
   const textarea =
     document.getElementById("live-memo");
 
@@ -319,134 +424,135 @@ function loadMemo() {
     return;
   }
 
-  textarea.value =
-    localStorage.getItem(getMemoKey()) ?? "";
+  try {
+    const response = await fetch(
+      `/api/lives/${encodeURIComponent(CURRENT_LIVE_ID)}/memo`
+    );
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        result.message || "メモの取得に失敗しました"
+      );
+    }
+
+    textarea.value = result.memo || "";
+
+  } catch (error) {
+    console.error(error);
+    textarea.value = "";
+  }
 }
 
 /* =========================
    写真
 ========================= */
+async function addPhotos(event) {
+  const files = Array.from(event.target.files);
 
-function getPhotoKey() {
-    return `photos-${CURRENT_LIVE_ID}`;
-  }
-  
-  function getPhotos() {
-    return JSON.parse(
-      localStorage.getItem(getPhotoKey())
-    ) ?? [];
-  }
-  
-  async function addPhotos(event) {
-    const files = Array.from(event.target.files);
-  
-    if (files.length === 0) {
-      return;
-    }
-
-    for (const file of files){
-      const formData = new FormData();
-
-      formData.append("photo", file);
-      formData.append("live_id", CURRENT_LIVE_ID);
-
-      const response =
-        await fetch("/upload-photo", {
-          method: "POST",
-          body: formData
-        });
-
-        const data = await response.json();
-        
-        if (!response.ok || !data.success) {
-          alert(
-            data.message ?? `${file.name} の保存に失敗しました。`
-          );
-        }
-    }
-
-      await displayPhotos();
-
-      event.target.value = "";
+  if (files.length === 0) {
+    return;
   }
 
-  async function displayPhotos() {
-    const gallery =
-        document.getElementById("photo-gallery");
+  for (const file of files){
+    const formData = new FormData();
 
-    if (!gallery) return;
+    formData.append("photo", file);
+    formData.append("live_id", CURRENT_LIVE_ID);
 
     const response =
-        await fetch(`/photos/${CURRENT_LIVE_ID}`);
+      await fetch("/upload-photo", {
+        method: "POST",
+        body: formData
+      });
 
-    if (!response.ok) {
-        console.error("写真一覧を取得できません");
-        return;
-    }
-
-    currentPhotos = await response.json();
-
-    gallery.innerHTML = "";
-
-    if (currentPhotos.length === 0) {
-        gallery.innerHTML = `
-            <p class="photo-empty">
-                写真はまだ登録されていません。
-            </p>
-        `;
-        return;
-    }
-
-    currentPhotos.forEach((photo, index) => {
-
-        const item =
-            document.createElement("div");
-
-        item.classList.add("photo-item");
-
-        item.innerHTML = `
-            <img
-                src="${photo.src}"
-                class="live-photo"
-                alt="ライブ写真"
-            >
-
-            <button
-             type="button"
-             class="delete-photo-button"
-             data-id="${photo.id}">
-             削除
-             </button>
-        `;
-
-        item.querySelector(".live-photo")
-            .addEventListener("click", () => {
-                openPhotoModal(index);
-            });
-
-        gallery.appendChild(item);
-    });
-
-    document
-  .querySelectorAll(".delete-photo-button")
-  .forEach((button) => {
-
-    button.addEventListener("click", async () => {
-
-      const confirmed =
-        confirm("この写真を削除しますか？");
-
-      if (!confirmed) {
-        return;
+      const data = await response.json();
+      
+      if (!response.ok || !data.success) {
+        alert(
+          data.message ?? `${file.name} の保存に失敗しました。`
+        );
       }
+  }
 
-      await deletePhoto(button.dataset.id);
-    });
+    await displayPhotos();
 
+    event.target.value = "";
+}
+
+async function displayPhotos() {
+  const gallery =
+      document.getElementById("photo-gallery");
+
+  if (!gallery) return;
+
+  const response =
+      await fetch(`/photos/${CURRENT_LIVE_ID}`);
+
+  if (!response.ok) {
+      console.error("写真一覧を取得できません");
+      return;
+  }
+
+  currentPhotos = await response.json();
+
+  gallery.innerHTML = "";
+
+  if (currentPhotos.length === 0) {
+      gallery.innerHTML = `
+          <p class="photo-empty">
+              写真はまだ登録されていません。
+          </p>
+      `;
+      return;
+  }
+
+  currentPhotos.forEach((photo, index) => {
+
+      const item =
+          document.createElement("div");
+
+      item.classList.add("photo-item");
+
+      item.innerHTML = `
+          <img
+              src="${photo.src}"
+              class="live-photo"
+              alt="ライブ写真"
+          >
+
+          <button
+            type="button"
+            class="delete-photo-button"
+            data-id="${photo.id}">
+            削除
+            </button>
+      `;
+
+      item.querySelector(".live-photo")
+          .addEventListener("click", () => {
+              openPhotoModal(index);
+          });
+
+      gallery.appendChild(item);
+  });
+
+  document
+    .querySelectorAll(".delete-photo-button")
+    .forEach((button) => {
+      button.addEventListener("click", async () => {
+        const confirmed =
+        confirm("この写真を削除しますか？");
+        if (!confirmed) {
+          return;
+        }
+        await deletePhoto(button.dataset.id);
+      });
   });
 }
 
-async function deletePhoto(filename) {
+async function deletePhoto(photoId) {
 
   const response =
     await fetch("/delete-photo", {
@@ -458,7 +564,7 @@ async function deletePhoto(filename) {
 
       body: JSON.stringify({
         live_id: CURRENT_LIVE_ID,
-        filename: filename
+        filename: photoId
       })
     });
 

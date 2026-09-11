@@ -7,9 +7,10 @@ document.addEventListener("DOMContentLoaded", () => {
     loadSavedPlaylist();
 });
 
-function displayLiveInfo() {
+async function displayLiveInfo() {
     const container = document.getElementById("live-info");
-    const savedPlaylist = JSON.parse(localStorage.getItem("liveList")) ?? [];
+    const response = await fetch("/api/lives");
+    const savedPlaylist = await response.json();
     const playlist = savedPlaylist.find(
         (item) => String(item.id) === String(CURRENT_LIVE_ID)
     );
@@ -21,14 +22,27 @@ function displayLiveInfo() {
         return;
     }
     const artistName = String(
-        playlist.title ?? "タイトルなし"
+        playlist.artist ?? "タイトルなし"
     )
-    .replace("ライブ", "")
     .trim();
 
     container.innerHTML = `
     <div class="live-info">
     <h2>${escapeHtml(artistName)}のプレイリストを作成します</h2>
+    <div class="playlist-switch">
+
+    <button
+        type="button"
+        id="show-beginner-playlist">
+        BEGINNER
+    </button>
+
+    <button
+        type="button"
+        id="show-core-playlist">
+        CORE
+    </button>
+    </div>
     <button type="button" id="make-playlist-beginner">
     初心者向けプレイリスト
     </button>
@@ -45,6 +59,18 @@ function displayLiveInfo() {
     document
     .getElementById("make-playlist-core")
     .addEventListener("click", makePlaylistCore);
+
+    document
+    .getElementById("show-beginner-playlist")
+    .addEventListener("click", () => {
+        showSavedPlaylist("beginner");
+    });
+
+    document
+    .getElementById("show-core-playlist")
+    .addEventListener("click", () => {
+        showSavedPlaylist("core");
+    });
 }
 
 function escapeHtml(value) {
@@ -56,17 +82,77 @@ function escapeHtml(value) {
         .replaceAll("'", "&#039;");
 }
 
+async function showSavedPlaylist(type) {
+
+    try {
+
+        const songs =
+            await getPlaylistFromDatabase(type);
+
+        if (songs.length === 0) {
+            alert("保存済みのプレイリストはありません。");
+            return;
+        }
+
+        displayPlaylist(songs);
+
+    } catch (error) {
+
+        console.error(
+            "プレイリスト取得エラー:",
+            error
+        );
+
+    }
+}
+
+
+// 共通関数
+async function savePlaylistToDatabase(type, songs) {
+
+    const response = await fetch(
+      `/api/lives/${encodeURIComponent(CURRENT_LIVE_ID)}/playlist`,
+      {
+        method: "POST",
+  
+        headers: {
+          "Content-Type": "application/json"
+        },
+  
+        body: JSON.stringify({
+          type: type,
+          songs: songs
+        })
+      }
+    );
+  
+    const result = await response.json();
+  
+    if (!response.ok) {
+      throw new Error(
+        result.message || "プレイリストの保存に失敗しました"
+      );
+    }
+  
+    return result;
+  }
+
 async function makePlaylistBeginner() {
     const button = document.getElementById("make-playlist-beginner");
     button.disabled = true;
     button.textContent = "作成中...";
 
     try {
-        const savedPlaylistBeginner = JSON.parse(localStorage.getItem("liveList")) ?? [];
+        const response_begin = await fetch("/api/lives");
+        const savedPlaylistBeginner = await response_begin.json();
         
         const playlistBeginner = savedPlaylistBeginner.find(
             (item) => String(item.id) === String(CURRENT_LIVE_ID)
         );
+        if (!playlistBeginner) {
+            console.error("ライブ情報が見つかりません");
+            return;
+        }
         console.log("playlistBeginner:", playlistBeginner);
 
         const response = await fetch("/playlist-make-beginner", {
@@ -75,7 +161,7 @@ async function makePlaylistBeginner() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                artist: playlistBeginner.title.replace("ライブ", "").trim()
+                artist: playlistBeginner.artist.trim()
             })
         });
 
@@ -94,9 +180,9 @@ async function makePlaylistBeginner() {
 
         const result = await response.json();
 
-        localStorage.setItem(
-            getPlaylistKey(),
-            JSON.stringify(result)
+        await savePlaylistToDatabase(
+            "beginner",
+            result
         );
 
         displayPlaylist(result);
@@ -107,62 +193,22 @@ async function makePlaylistBeginner() {
     }
 }
 
-
-function displayPlaylist(result) {
-    const container = document.getElementById("playlist-area");
-
-    container.innerHTML = `
-    <div id="playlist-make-beginner"></div>
-    `;
-    const list = document.getElementById("playlist-make-beginner");
-
-    result.forEach((song, index) => {
-        const item = document.createElement("article");
-        item.classList.add("playlist-card");
-        item.innerHTML = `
-        <div class="artwork-area">
-        <span class="song-number">
-        ${index + 1}
-        </span>
-        
-        <img
-        src="${song.artwork}"alt="${escapeHtml(song.title)}"
-        class="playlist-artwork">
-        </div>
-        <div class="song-info">
-            <h3>
-                ${escapeHtml(song.title)}
-            </h3>
-
-            <p>
-                ${escapeHtml(song.album)}
-            </p>
-        </div>
-
-        <div class="song-link">
-            <a href="${song.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            >
-            Apple Musicで開く
-            </a>
-        </div>
-        `;
-        list.appendChild(item);
-    });
-}
-
 async function makePlaylistCore() {
     const button = document.getElementById("make-playlist-core");
     button.disabled = true;
     button.textContent = "作成中...";
 
     try {
-        const savedPlaylistCore = JSON.parse(localStorage.getItem("liveList")) ?? [];
+        const response_core = await fetch("/api/lives");
+        const savedPlaylistCore = await response_core.json();
         
         const playlistCore = savedPlaylistCore.find(
             (item) => String(item.id) === String(CURRENT_LIVE_ID)
         );
+        if (!playlistCore) {
+            console.error("ライブ情報が見つかりません");
+            return;
+        }
         console.log("playlistCore:", playlistCore);
 
         const response = await fetch("/playlist-make-core", {
@@ -171,7 +217,7 @@ async function makePlaylistCore() {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                artist: playlistCore.title.replace("ライブ", "").trim()
+                artist: playlistCore.artist.trim()
             })
         });
 
@@ -190,9 +236,9 @@ async function makePlaylistCore() {
 
         const result = await response.json();
 
-        localStorage.setItem(
-            getPlaylistKey(),
-            JSON.stringify(result)
+        await savePlaylistToDatabase(
+            "core",
+            result
         );
 
         displayPlaylist(result);
@@ -207,9 +253,9 @@ function displayPlaylist(result) {
     const container = document.getElementById("playlist-area");
 
     container.innerHTML = `
-    <div id="playlist-make-core"></div>
+    <div id="playlist-list"></div>
     `;
-    const list = document.getElementById("playlist-make-core");
+    const list = document.getElementById("playlist-list");
 
     result.forEach((song, index) => {
         const item = document.createElement("article");
@@ -221,8 +267,9 @@ function displayPlaylist(result) {
         </span>
         
         <img
-        src="${song.artwork}"alt="${escapeHtml(song.title)}"
-        class="playlist-artwork">
+            src="${song.artwork}"
+            alt="${escapeHtml(song.title)}"
+            class="playlist-artwork">
         </div>
         <div class="song-info">
             <h3>
@@ -235,7 +282,7 @@ function displayPlaylist(result) {
         </div>
 
         <div class="song-link">
-            <a href="${song.url}
+            <a href="${song.url}"
             target="_blank"
             rel="noopener noreferrer"
             >
@@ -247,17 +294,47 @@ function displayPlaylist(result) {
     });
 }
 
-function getPlaylistKey() {
-    return `playlist-${CURRENT_LIVE_ID}`;
-}
+// Neonに保存済みのプレイリストを取得
+async function getPlaylistFromDatabase(type) {
 
-function loadSavedPlaylist() {
-    const savedPlaylist = localStorage.getItem(getPlaylistKey());
+    const response = await fetch(
+        `/api/lives/${encodeURIComponent(CURRENT_LIVE_ID)}/playlist/${type}`
+    );
 
-    if (!savedPlaylist) {
-        return;
+    const songs = await response.json();
+
+    if (!response.ok) {
+        throw new Error(
+            songs.message || "プレイリストの取得に失敗しました"
+        );
     }
 
-    const result = JSON.parse(savedPlaylist);
-    displayPlaylist(result);
+    return songs;
+}
+
+// プレイリスト自動表示
+async function loadSavedPlaylist() {
+
+    try {
+        const beginner =
+            await getPlaylistFromDatabase("beginner");
+
+        if (beginner.length > 0) {
+            displayPlaylist(beginner);
+            return;
+        }
+
+        const core =
+            await getPlaylistFromDatabase("core");
+
+        if (core.length > 0) {
+            displayPlaylist(core);
+        }
+
+    } catch (error) {
+        console.error(
+            "保存済みプレイリストの取得に失敗:",
+            error
+        );
+    }
 }

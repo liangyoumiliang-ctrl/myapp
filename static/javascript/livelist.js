@@ -2,26 +2,53 @@ document.addEventListener("DOMContentLoaded", () => {
     displayLiveList();
   });
   
-  function displayLiveList() {
+  async function displayLiveList() {
     const container =
       document.getElementById("live-list");
 
     const days = document.getElementById("countdown");
-  
-    const savedLives =
-      JSON.parse(localStorage.getItem("liveList")) ?? [];
+
+    const response = await fetch("/api/lives");
+
+    const savedLives = await response.json();
+
+    // ログアウト中
+  if (response.status === 401) {
+
+    container.innerHTML = `
+      <div class="empty">
+        <h2>
+          今後のライブ予定はありません
+        </h2>
+
+        <h3>
+          ログインするとライブ予定を確認・追加できます
+        </h3>
+      </div>
+    `;
+
+    return;
+  }
 
     const now = new Date();
 
     const futureLives = savedLives
     .filter((live) => {
-        const liveDate = new Date(live.start);
+        const liveDate = new Date(
+          `${live.live_date}T${live.start_time || "00:00"}`
+        );
     
         return !Number.isNaN(liveDate.getTime()) &&
         liveDate >= now;
     })
     .sort((a, b) => {
-        return new Date(a.start) - new Date(b.start);
+      const dateA = new Date(
+        `${a.live_date}T${a.start_time || "00:00"}`
+      );
+      const dateB = new Date(
+        `${b.live_date}T${b.start_time || "00:00"}`
+      );
+      return dateA - dateB
     });
 
     container.innerHTML = "";
@@ -36,15 +63,13 @@ document.addEventListener("DOMContentLoaded", () => {
         「Add Live」からライブ予定を追加しましょう！
         </h3>
         </div>
-        ;`
+        `;
       return;
     }
 
-
-    
-  
     futureLives.forEach((live) => {
-        const countdown = getCountdown(live.start);
+        const liveStart = `${live.live_date}T${live.start_time || "00:00"}`;
+        const countdown = getCountdown(liveStart);
         const card = document.createElement("article");
         card.classList.add("live-card");
   
@@ -52,23 +77,23 @@ document.addEventListener("DOMContentLoaded", () => {
     <div class="live-main">
 
         <h2>
-            ${escapeHtml(live.title.replace("ライブ",""))}
+            ${escapeHtml(live.artist)}
         </h2>
 
         <div class="live-meta">
             <p>
                 <span>DATE</span>
-                ${escapeHtml(formatLiveDate(live.start))}
+                ${escapeHtml(formatLiveDate(liveStart))}
             </p>
 
             <p>
                 <span>START</span>
-                ${escapeHtml(formatLiveTime(live.start))}
+                ${escapeHtml(formatLiveTime(liveStart))}
             </p>
 
             <p>
                 <span>PLACE</span>
-                ${escapeHtml(live.location)}
+                ${escapeHtml(live.venue || "")}
             </p>
         </div>
 
@@ -144,20 +169,27 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
   
-  function deleteLive(id) {
-    const savedLives =
-      JSON.parse(localStorage.getItem("liveList")) ?? [];
-  
-    const updatedLives = savedLives.filter(
-      (live) => live.id !== id
-    );
-  
-    localStorage.setItem(
-      "liveList",
-      JSON.stringify(updatedLives)
-    );
-  
-    displayLiveList();
+  async function deleteLive(id) {
+    try {
+      const response = await fetch(
+        `/api/lives/${encodeURIComponent(id)}`,
+        {
+          method: "DELETE"
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          result.message || "削除に失敗しました"
+        );
+      }
+      displayLiveList();
+    } catch (error) {
+      console.error(error);
+      alert("ライブを削除できませんでした")
+    }
   }
 
   function getCountdown(liveDate) {

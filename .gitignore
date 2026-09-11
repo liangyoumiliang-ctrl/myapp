@@ -17,3 +17,6 @@ wheels/
 
 # Uploaded images
 static/uploads/.DS_Store
+
+# Uploaded images
+static/uploads/

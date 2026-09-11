@@ -52,7 +52,15 @@
       .header-right {
         justify-self: end;
         margin-right: 8%;
-      }
+        display: flex;
+        align-items: center;
+        gap: 30px;
+    }
+
+  .login-area {
+    width: 80px;
+    text-align: center;
+  }
 
     a {
         color: #fff;
@@ -80,9 +88,54 @@
         transform:translateY(-50%);
     }
 
-    .live-info {
+    #live-info {
         text-align: center;
     }
+
+    .playlist-switch {
+        display: flex;
+        justify-content: center;
+      
+        width: 360px;
+        margin: 35px auto 40px;
+      
+        border: 2px solid #8b5cf6;
+        border-radius: 999px;
+      
+        overflow: hidden;
+      }
+      .playlist-switch button {
+        flex: 1;
+      
+        margin: 0px;
+        padding: 14px 25px;
+      
+        border: none;
+        border-radius: 0;
+      
+        background: rgba(255, 255, 255, 0.08);
+      
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+      
+        cursor: pointer;
+      }
+      .playlist-switch button:hover {
+        background: linear-gradient(
+            90deg,
+            #5a1ec3,
+            #871497
+        );
+      }
+      
+      .playlist-switch button.active {
+        background: linear-gradient(
+          90deg,
+          #7c3aed,
+          #c026d3
+        );
+      }
 
     .playlist-card {
         position: relative;
@@ -101,27 +154,6 @@
             0 0 40px rgba(138,43,226,.4);
 
         background: #fff;
-    }
-
-    #predict-setlist-button{
-        background-color: #17b717; /* 基本の赤色 */
-        color: #ffffff;            /* 文字色：白 */
-        border: none;              /* 枠線なし */
-        padding: 10px 18px;         /* 余白（上下 左右） */
-        font-size: 16px;           /* 文字サイズ */
-        border-radius: 8px;        /* 角丸 */
-        cursor: pointer;           /* カーソルをポインターに */
-        transition: background-color 0.2s ease; /* ホバー時の滑らかな変化 */
-        text-decoration: none;
-        margin: 5px;
-    }
-
-    #predict-setlist-button:hover {
-        background-color: #0a820a;
-    }
-
-    #predict-setlist-button:active {
-        background-color: #045004;
     }
 
     .artwork-area{
@@ -188,7 +220,8 @@
         background:#8b3dff;
     }
 
-    button {
+    #make-playlist-beginner,
+    #make-playlist-core {
         padding: 12px 28px;
 
         border: none;
@@ -208,7 +241,8 @@
         margin: 30px;
     }
 
-    button:hover {
+    #make-playlist-beginner:hover,
+    #make-playlist-core:hover {
         background: linear-gradient(
             90deg,
             #5a1ec3,
@@ -216,12 +250,24 @@
         );
     }
 
-    button:active {
+    #make-playlist-beginner:active,
+    #make-playlist-core:active {
         background: linear-gradient(
         90deg,
         #38098a
     );
     }
+
+    footer{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      
+        height: 50px;
+        background-color: #000;
+        font-size: 15px;
+        color: #fff;
+      }
 
     
 

@@ -52,6 +52,15 @@
   .header-right {
     justify-self: end;
     margin-right: 8%;
+
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .login-area {
+    width: 80px;
+    text-align: center;
   }
   
   .hero{
@@ -93,6 +102,15 @@
     animation: bounce 1.5s infinite;
 }
 
+.big_login a{
+  font-size: 36px;
+  font-weight: bold;
+  color: var(--tx-color);
+}
+
+.big_login a:hover {
+  color:var(--tx-hover);
+}
 @keyframes bounce {
     0%, 100% {
         transform: translateY(0);

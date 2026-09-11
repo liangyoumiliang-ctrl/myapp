@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>PlayList</title>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/playlist.css') }}">
   <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/thema.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/header.css') }}">
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/playlist.css') }}">
 </head>
 
 <body data-live-id="{{ live_id }}">
@@ -26,7 +27,28 @@
     </nav>
   
     <div class="header-right">
-      <a href="#" id="theme-toggle">☀</a>
+      <button type="button" id="theme-toggle"></button>
+      <div class="login-area">
+      {% if user %}
+        <div class="user-menu">
+          <button type="button" class="user-menu-button" id="user-menu-button">
+            {{ user.display_name }}
+            <span class="menu-arrow">⬇︎</span>
+          </button>
+
+          <div class="user-dropdown" id="user-dropdown">
+            <div class="user-info">
+              <span>{{ user.display_name }}</span>
+              <small>{{ user.email }}</small>
+            </div>
+            <a href="{{ url_for('login_change') }}">Account Change</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+          </div>
+        </div>
+      {% else %}
+        <a href="{{ url_for('login') }}">Login </a>
+      {% endif %}
+      </div>
     </div>
   
   </header>
@@ -37,7 +59,7 @@
   <h1>プレイリスト作成</h1>
   <p>初心者向け・コアファン向けプレイリストを作成</p>
 </div>
-  <div id="live-info">
+  <div class="live-install" id="live-info">
     <p>ライブ情報を読み込んでいます...</p>
   </div>
 
@@ -48,6 +70,7 @@
     defer>
   </script>
   <script src="{{ url_for('static', filename='javascript/thema.js') }}" defer></script>
+  <script src="{{ url_for('static', filename='javascript/header.js') }}" defer></script>
   </div>
   <footer>
     <small>© 2026 Re:Live All Rights Reserved.</small>

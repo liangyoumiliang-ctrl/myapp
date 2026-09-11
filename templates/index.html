@@ -5,6 +5,7 @@
     <title>Live Home</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/index.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/thema.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='stylesheets/header.css') }}">
   </head>
   <body><!--このbody要素の中に書きます-->
     <header class="header-nav">
@@ -25,7 +26,28 @@
       </nav>
     
       <div class="header-right">
-        <a href="#" id="theme-toggle">☀</a>
+        <button type="button" id="theme-toggle"></button>
+        <div class="login-area">
+        {% if user %}
+          <div class="user-menu">
+            <button type="button" class="user-menu-button" id="user-menu-button">
+              {{ user.display_name }}
+              <span class="menu-arrow">⬇︎</span>
+            </button>
+
+            <div class="user-dropdown" id="user-dropdown">
+              <div class="user-info">
+                <span>{{ user.display_name }}</span>
+                <small>{{ user.email }}</small>
+              </div>
+              <a href="{{ url_for('login_change') }}">Account Change</a>
+              <a href="{{ url_for('logout') }}">Logout</a>
+            </div>
+          </div>
+        {% else %}
+          <a href="{{ url_for('login') }}">Login </a>
+        {% endif %}
+        </div>
       </div>
     
     </header>
@@ -36,10 +58,17 @@
           <h1>ライブの前も、終わったあとも。</h1>
           <br>
           <p>AIでライブに備えて、思い出を残そう</p>
-          <span class="scroll-guide">
-            あなたのライブへ<br>
-            <span class="arrow">⇩</span>
-          </span>
+          <div class="big_login">
+            {% if user %}
+            <span class="scroll-guide">
+              あなたのライブへ<br>
+              <span class="arrow">⇩</span>
+            </span>
+            {% else %}
+            <br>
+            <a href="{{ url_for('login') }}">『Re:Liveをはじめる』</a>
+            {% endif %}
+          </div>
         </div>
       </div>
       <section id="home-section">
@@ -85,7 +114,9 @@
       </section>
 
      <script src="{{ url_for('static', filename='javascript/index.js') }}" defer></script>
-     <script src="{{ url_for('static', filename='javascript/thema.js') }}" defer></script>
+     <script src="{{ url_for('static', filename='javascript/thema.js') }}" defer>
+     </script>
+     <script src="{{ url_for('static', filename='javascript/header.js') }}" defer></script>
      <footer>
         <small>© 2026 Re:Live All Rights Reserved.</small>
      </footer>

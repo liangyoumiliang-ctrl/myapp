@@ -51,9 +51,18 @@
     }
     
     .header-right {
-      justify-self: end;
-      margin-right: 8%;
-    }
+    justify-self: end;
+    margin-right: 8%;
+
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .login-area {
+    width: 80px;
+    text-align: center;
+  }
 
     a {
         color: #fff;
@@ -207,6 +216,7 @@
         color: var(--tx-color);
         min-width: 250px;
       }
+
 
       .live-photo {
         cursor: pointer;

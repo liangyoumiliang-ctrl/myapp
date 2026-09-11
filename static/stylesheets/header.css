@@ -1,0 +1,81 @@
+.login-area {
+  width: 80px;
+  text-align: center;
+}
+
+.user-menu {
+    position: relative;
+  }
+  
+  .user-menu-button {
+    border: none;
+    background: none;
+    color: white;
+  
+    font-size: 15px;
+    cursor: pointer;
+  }
+  
+  .menu-arrow {
+    margin-left: 5px;
+    font-size: 10px;
+  }
+  
+  .user-dropdown {
+    display: none;
+  
+    position: absolute;
+    top: 35px;
+    right: 0;
+  
+    width: 220px;
+    padding: 10px;
+  
+    background: #181818;
+    border-radius: 10px;
+  
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  
+    z-index: 2000;
+  }
+  
+  .user-dropdown.open {
+    display: block;
+  }
+  
+  .user-dropdown a {
+    display: block;
+  
+    padding: 10px;
+    border-radius: 6px;
+  
+    color: white;
+    text-decoration: none;
+  }
+  
+  .user-dropdown a:hover {
+    background: #333;
+  }
+  
+  .user-info {
+    padding: 10px;
+    margin-bottom: 5px;
+  
+    border-bottom: 1px solid #444;
+  }
+  
+  .user-info span,
+  .user-info small {
+    display: block;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  .user-info small {
+    margin-top: 3px;
+    color: #aaa;
+    font-size: 12px;
+  }
+
+

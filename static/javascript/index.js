@@ -3,25 +3,34 @@ document.addEventListener("DOMContentLoaded", () => {
     displayLiveHistory();
 });
 
-function displayNextLive() {
+async function displayNextLive() {
     const container = document.getElementById("live-list");
 
-    const savedLives =
-        JSON.parse(localStorage.getItem("liveList")) ?? [];
+    const response = await fetch("/api/lives");
+
+    const savedLives = await response.json();
     
     const now = new Date();
 
     // 日付順
     const futureLives = savedLives
     .filter((live) => {
-        const liveDate = new Date(live.start);
+        const liveDate = new Date(
+            `${live.live_date}T${live.start_time || "00:00"}`
+        );
     
         return !Number.isNaN(liveDate.getTime()) &&
         liveDate >= now;
     })
     .sort((a, b) => {
-        return new Date(a.start) - new Date(b.start);
-    });
+        const dateA = new Date(
+          `${a.live_date}T${a.start_time || "00:00"}`
+        );
+        const dateB = new Date(
+          `${b.live_date}T${b.start_time || "00:00"}`
+        );
+        return dateA - dateB
+      });
 
     container.innerHTML = "";
 
@@ -35,17 +44,21 @@ function displayNextLive() {
     // 一番近いライブだけ取得
     const nextlive = futureLives[0];
 
+    
+    const nextStart = `${nextlive.live_date}T${nextlive.start_time || "00:00"}`;
     container.innerHTML = `
-        <article class="live-card">
-            <h2>${escapeHtml(nextlive.title.replace("ライブ", ""))}</h2>
+    <article class="live-card">
+        <h2>${escapeHtml(nextlive.artist)}</h2>
 
-            <p>${escapeHtml(formatLiveDate(nextlive.start))}</p>
+        <p>${escapeHtml(formatLiveDate(nextStart))}</p>
 
-            <p>開演時間 ${escapeHtml(formatLiveTime(nextlive.start))}</p>
+        <p>開演時間 ${escapeHtml(formatLiveTime(nextStart))}</p>
 
-            <p>場所 ${escapeHtml(nextlive.location)}</p>
-        </article>
+        <p>場所 ${escapeHtml(nextlive.venue || ""
+        )}</p>
+    </article>
     `;
+
 
     const predict_container = document.getElementById("predict-setlist");
 
@@ -80,23 +93,33 @@ function displayNextLive() {
 
 
 
-function displayLiveHistory() {
+async function displayLiveHistory() {
     const container = document.getElementById("history-list");
 
-    const savedLives =
-        JSON.parse(localStorage.getItem("liveList")) ?? [];
+    const response = await fetch("/api/lives");
+
+    const savedLives = await response.json();
+
     const now = new Date();
 
     const pastLives = savedLives
         .filter((live) => {
-            const liveDate = new Date(live.start);
+            const liveDate = new Date(
+                `${live.live_date}T${live.start_time || "00:00"}`
+            );
 
             return !Number.isNaN(liveDate.getTime()) &&
                 liveDate < now;
         })
         .sort((a, b) => {
-            return new Date(b.start) - new Date(a.start);
-        });
+            const dateA = new Date(
+              `${a.live_date}T${a.start_time || "00:00"}`
+            );
+            const dateB = new Date(
+              `${b.live_date}T${b.start_time || "00:00"}`
+            );
+            return dateB - dateA
+          });
     
     container.innerHTML = "";
 
@@ -110,15 +133,17 @@ function displayLiveHistory() {
 
     const history = pastLives[0];
 
+    const historyStart = `${history.live_date}T${history.start_time || "00:00"}`
+
     container.innerHTML = `
         <article class="history-card">
-            <h2>${escapeHtml(history.title.replace("ライブ", ""))}</h2>
+            <h2>${escapeHtml(history.artist)}</h2>
 
-            <p>${escapeHtml(formatLiveDate(history.start))}</p>
+            <p>${escapeHtml(formatLiveDate(historyStart))}</p>
 
-            <p>開演時間 ${escapeHtml(formatLiveTime(history.start))}</p>
+            <p>開演時間 ${escapeHtml(formatLiveTime(historyStart))}</p>
 
-            <p>場所 ${escapeHtml(history.location)}</p>
+            <p>場所 ${escapeHtml(history.venue || "")}</p>
         </article>
     `;
 

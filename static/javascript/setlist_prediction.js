@@ -9,9 +9,11 @@ document.addEventListener("DOMContentLoaded", () => {
     loadSavedPrediction();
 });
 
-function displayLiveInfo() {
+async function displayLiveInfo() {
     const container = document.getElementById("live-info");
-    const savedLives = JSON.parse(localStorage.getItem("liveList")) ?? [];
+    const response = await fetch("/api/lives");
+    const savedLives = await response.json();
+    
     console.log("savedLives:", savedLives);
 
     const live = savedLives.find(
@@ -24,17 +26,18 @@ function displayLiveInfo() {
         return;
     }
     const artistName = String(
-        live.title ?? "タイトルなし"
+        live.artist ?? "タイトルなし"
     )
-    .replace("ライブ", "")
     .trim();
+
+    const liveStart = `${live.live_date}T${live.start_time || "00:00"}`;
 
     container.innerHTML = `
     <div class="live-info">
     <h1>${escapeHtml(artistName)}</h1>
-    <p>DATE : ${escapeHtml(formatLiveDate(live.start))}
+    <p>DATE : ${escapeHtml(formatLiveDate(liveStart))}
     </p>
-    <p>PLACE : ${escapeHtml(live.location ?? "会場未登録")}
+    <p>PLACE : ${escapeHtml(live.venue ?? "会場未登録")}
     </p>
     <button type="button" id="predict-setlist-button">
     AIでセトリを予想
@@ -72,7 +75,9 @@ async function predictSetlist(){
 
     try {
     console.log("ボタン押下");
-    const savedLives = JSON.parse(localStorage.getItem("liveList")) ?? [];
+    const response_pre = await fetch("/api/lives");
+    const savedLives = await response_pre.json();
+    
     const live = savedLives.find(
         (item) => String(item.id) === String(CURRENT_LIVE_ID)
     );
@@ -83,9 +88,9 @@ async function predictSetlist(){
             "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            artist: live.title.replace("ライブ", "").trim(),
+            artist: live.artist.trim(),
             date: live.start,
-            venue: live.location
+            venue: live.venue || ""
         })
     });
 
@@ -106,11 +111,29 @@ async function predictSetlist(){
 
     console.log("予想結果:", result);
 
-    localStorage.setItem(
-        getPredictionKey(),
-        JSON.stringify(result)
+    const saveResponse = await fetch(
+        `/api/lives/${encodeURIComponent(CURRENT_LIVE_ID)}/prediction`,
+        {
+            method: "POST",
+    
+            headers: {
+                "Content-Type": "application/json"
+            },
+    
+            body: JSON.stringify({
+                songs: result
+            })
+        }
     );
-
+    
+    const saveResult = await saveResponse.json();
+    
+    if (!saveResponse.ok) {
+        throw new Error(
+            saveResult.message || "予想結果の保存に失敗しました"
+        );
+    }
+    
     displayPrediction(result);
 
     } finally {
@@ -148,7 +171,7 @@ function displayPrediction(result) {
         </div>
         <div class="song-link">
             
-            <a href="${song.url}
+            <a href="${song.url}"
             target="_blank"
             rel="noopener noreferrer"
             >
@@ -162,21 +185,35 @@ function displayPrediction(result) {
 
 }
 
-function getPredictionKey() {
-    return `prediction-${CURRENT_LIVE_ID}`;
-}
+async function loadSavedPrediction() {
 
-function loadSavedPrediction() {
-    const savedPrediction =
-        localStorage.getItem(getPredictionKey());
+    try {
 
-    if (!savedPrediction) {
-        return;
+        const response = await fetch(
+            `/api/lives/${encodeURIComponent(CURRENT_LIVE_ID)}/prediction`
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(
+                result.message || "予想結果の取得に失敗しました"
+            );
+        }
+
+        if (result.length === 0) {
+            return;
+        }
+
+        displayPrediction(result);
+
+    } catch (error) {
+
+        console.error(
+            "保存済み予想の取得に失敗:",
+            error
+        );
+
     }
-
-    const result =
-        JSON.parse(savedPrediction);
-
-    displayPrediction(result);
 }
 

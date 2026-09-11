@@ -15,23 +15,50 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   });
   
-  function displayLiveHistory() {
+  async function displayLiveHistory() {
     const container = document.getElementById("history-list");
-  
-    const savedLives =
-      JSON.parse(localStorage.getItem("liveList")) ?? [];
+
+    const response = await fetch("/api/lives");
+
+    const savedLives = await response.json();
+
+      // ログアウト中
+    if (response.status === 401) {
+
+      container.innerHTML = `
+        <div class="empty">
+          <h2>
+            ライブ履歴はありません
+          </h2>
+
+          <h3>
+            ログインするとライブ履歴を確認できます
+          </h3>
+        </div>
+      `;
+
+      return;
+    }
   
     const now = new Date();
   
     const pastLives = savedLives
       .filter((live) => {
-        const liveDate = new Date(live.start);
+        const liveDate = new Date(
+          `${live.live_date}T${live.start_time || "00:00"}`
+        );
   
         return !Number.isNaN(liveDate.getTime()) &&
           liveDate < now;
       })
       .sort((a, b) => {
-        return new Date(b.start) - new Date(a.start);
+        const dateA = new Date(
+          `${a.live_date}T${a.start_time || "00:00"}`
+        );
+        const dateB = new Date(
+          `${b.live_date}T${b.start_time || "00:00"}`
+        );
+        return dateB - dateA
       });
   
     container.innerHTML = "";
@@ -47,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   
     pastLives.forEach((live) => {
+      const historyStart = `${live.live_date}T${live.start_time || "00:00"}`
       const card = document.createElement("article");
       card.classList.add("history-card");
   
@@ -54,24 +82,24 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="history-main">
         <h2>
           ${escapeHtml(
-            live.title.replace("ライブ", "").trim()
+            live.artist
           )}
         </h2>
 
         <div class="live-meta">
         <p class="history-date">
         <span>DATE</span>
-          ${escapeHtml(formatLiveDate(live.start))}
+          ${escapeHtml(formatLiveDate(historyStart))}
         </p>
   
         <p class="history-time">
         <span>START</span>
-        ${escapeHtml(formatLiveTime(live.start))}
+        ${escapeHtml(formatLiveTime(historyStart))}
         </p>
   
         <p class="history-location">
         <span>PLACE</span>
-          ${escapeHtml(live.location)}
+          ${escapeHtml(live.venue || "")}
         </p>
         </div>
 
@@ -96,11 +124,11 @@ document.addEventListener("DOMContentLoaded", () => {
         <br>
 
         <p class="memory month">
-        ${escapeHtml(formatLiveMonth(live.start))}
+        ${escapeHtml(formatLiveMonth(historyStart))}
         </p>
 
         <p class="memory year">
-        ${escapeHtml(formatLiveYear(live.start))}
+        ${escapeHtml(formatLiveYear(historyStart))}
         </p>
 
         <button type="button" class="delete-button" data-id="${escapeHtml(live.id)}">
@@ -143,17 +171,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
   
-  function deletehistory(id) {
-    const savedLives = JSON.parse(localStorage.getItem("liveList")) ?? [];
-
-    const updatedLives = savedLives.filter(
-      (live) => live.id !== id
-    );
-    localStorage.setItem(
-      "liveList",
-      JSON.stringify(updatedLives)
-    );
-    displayLiveHistory();
+  async function deletehistory(id) {
+    try {
+      const response = await fetch(
+        `/api/lives/${encodeURIComponent(id)}`,
+        {
+          method: "DELETE"
+        }
+      );
+  
+      const result = await response.json();
+  
+      if (!response.ok) {
+        throw new Error(
+          result.message || "削除に失敗しました"
+        );
+      }
+  
+      displayLiveHistory();
+  
+    } catch (error) {
+      console.error(error);
+      alert("ライブ履歴を削除できませんでした。");
+    }
   }
   
   function formatLiveDate(dateString) {
@@ -188,7 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .replaceAll("'", "&#039;");
   }
 
-  function addHistoryLive(event) {
+  async function addHistoryLive(event) {
     event.preventDefault();
   
     const artist =
@@ -223,24 +263,39 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
   
-    const savedLives =
-      JSON.parse(localStorage.getItem("liveList")) ?? [];
+    try {
+      const response = await fetch("/api/lives", {
+        method: "POST",
   
-    savedLives.push({
-      id: crypto.randomUUID(),
-      title: `${artist} ライブ`,
-      start: startDate.toISOString(),
-      location: location || "会場未登録",
-      source: "manual"
-    });
+        headers: {
+          "Content-Type": "application/json"
+        },
   
-    localStorage.setItem(
-      "liveList",
-      JSON.stringify(savedLives)
-    );
+        body: JSON.stringify({
+          artist: artist,
+          date: liveDate,
+          time: liveTime,
+          venue: location || "会場未登録"
+        })
+      });
   
-    event.target.reset();
-    displayLiveHistory();
+      const result = await response.json();
   
-    alert("ライブ履歴に追加しました。");
+      if (!response.ok) {
+        throw new Error(
+          result.message || "ライブ履歴の追加に失敗しました"
+        );
+      }
+  
+      event.target.reset();
+  
+      await displayLiveHistory();
+  
+      alert("ライブ履歴に追加しました。");
+  
+    } catch (error) {
+      console.error(error);
+  
+      alert("ライブ履歴を追加できませんでした。");
+    }
   }
