@@ -38,8 +38,12 @@ google = oauth.register(
     client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
     server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
     client_kwargs={
-        "scope": "openid email profile "
-        "https://www.googleapis.com/auth/calendar.app.created"
+        "scope": (
+            "openid "
+            "email "
+            "profile "
+            "https://www.googleapis.com/auth/calendar.app.created"
+        )
     },
 )
 
@@ -609,9 +613,14 @@ def home():
 # login/logout
 @app.route("/login")
 def login():
+
     redirect_uri = url_for("auth_callback", _external=True)
+
     return google.authorize_redirect(
-        redirect_uri, access_type="offline", include_granted_scopes="true"
+        redirect_uri,
+        access_type="offline",
+        include_granted_scopes="true",
+        prompt="consent",
     )
 
 
