@@ -1814,7 +1814,7 @@ def search_itunes(song_name, artist_name):
         "term": f"{artist_name} {song_name}",
         "entity": "song",
         "country": "JP",
-        "limit": 10,
+        "limit": 5,
     }
 
     response = requests.get(url, params=params)
